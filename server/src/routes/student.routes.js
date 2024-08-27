@@ -35,10 +35,10 @@ studentRouter.route('/getMyCourses').get(
 
 
 
-studentRouter.route('/getLecturesByCourse/:courseCode').get(
-    isStudentLoggedIn,
-    getLecturesByCourse
-)
+// studentRouter.route('/getLecturesByCourse/:courseCode').get(
+//     isStudentLoggedIn,
+//     getLecturesByCourse
+// )
 
 
 
@@ -61,9 +61,8 @@ studentRouter.route('/delete').delete(
 );
 
 
-studentRouter.route('/getLecturesByCourse/:courseCode').get(
-
-    
+studentRouter.route('/getLecturesByCourse').post(
+    isStudentLoggedIn,    
     getLecturesByCourse
 )
 

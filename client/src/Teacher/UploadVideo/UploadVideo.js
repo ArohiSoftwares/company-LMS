@@ -65,89 +65,41 @@ const UploadVideo = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    const resposne2 = await axios.put(response.data.signedurl, formData, {
+    const resposne2 = await axios.put(response.data.signedurl, file, {
       headers: {
-        "Content-Type": "video/mp4",
         "Access-Control-Allow-Origin":
           "videostreaming31.s3.eu-north-1.amazonaws.com",
         "Access-Control-Allow-Credentials": true,
+        "Content-Type": "video/mp4",
       },
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
+        console.log("Upload percentCompleted=>", percentCompleted);
+        setUploading(true);
         setUploadProgress(percentCompleted);
       },
     });
+    const videoUrl = response.data.signedurl.split("/")[5].split("?")[0];
+
+    if (resposne2.status === 200) {
+      const videoForm = new FormData();
+      videoForm.append("videourl", videoUrl);
+      videoForm.append("lectureName", newVideo.lectureName);
+      videoForm.append("lectureDescription", newVideo.lectureDescription);
+      videoForm.append("courseCode", courseCode);
+      const response3 = await axios.post(
+        `/api/course/uploadLectures/videoUrl`,
+        videoForm
+      );
+      console.log("response 3=>", response3);
+    }
 
     setUploading(false);
 
     console.log("response 2=>", resposne2);
   };
-
-  async function uploadVideo(videoFile) {
-    //   const videoUrl = URL.createObjectURL(videoFile);
-    //   const video = document.createElement("video");
-
-    //   video.onloadedmetadata = async () => {
-    //     window.URL.revokeObjectURL(videoUrl);
-    //     const duration = Math.floor(video.duration);
-    //     const minutes = Math.floor(duration / 60);
-    //     const seconds = duration % 60;
-    //     setNewVideo({
-    //       ...newVideo,
-    //       video: videoUrl,
-    //       duration: `${minutes}m ${seconds}s`,
-    //     });
-
-    let data = new FormData();
-
-    try {
-      // Get pre-signed URL from backend
-      const response = await axios.post(
-        `/api/course/uploadLectures?courseCode=${courseCode}`
-      );
-
-      const signedUrl = response.data.signedurl;
-      seteSignedUrl(signedUrl);
-
-      console.log("response 1=>", response);
-      // let config = {
-      //   method: "put",
-      //   maxBodyLength: Infinity,
-      //   url: signedUrl,
-      //   headers: {
-      //     ...data.getHeaders(),
-      //   },
-      //   data: video,
-      // };
-
-      console.log(videoFile);
-      const res = await axios.put(signedUrl, videoFile, {
-        maxBodyLength: Infinity,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Accept: "*",
-          Host: "videostreaming31.s3.eu-north-1.amazonaws.com",
-        },
-      });
-
-      console.log(res.data);
-
-      // Upload video to S3 using pre-signed URL
-      // const response2 = await axios.put(signedUrl, videoFile, {
-      //   headers: {
-      //     "Content-Type": videoFile.type,
-      //     "Access-Control-Allow-Origin": "http://localhost:3000",
-      //     "Access-Control-Allow-Credentials": true,
-      //   },
-      //   transformRequest: [(data) => data],
-      // });
-      // console.log("response 2=>", response2);
-    } catch (error) {
-      console.error("Error uploading video:", error);
-    }
-  }
 
   // video.src = videoUrl;
   // }
@@ -155,35 +107,35 @@ const UploadVideo = () => {
   // Usage example
   // uploadVideo(videoFile, courseCode, newVideo, setNewVideo, seteSignedUrl);
 
-  const uploadLecture = async (e) => {
-    e.preventDefault();
+  // const uploadLecture = async (e) => {
+  //   e.preventDefault();
 
-    const body = {
-      video: newVideo.video,
-      lectureName: newVideo.lectureName,
-      lectureDescription: newVideo.lectureDescription,
+  //   const body = {
+  //     video: newVideo.video,
+  //     lectureName: newVideo.lectureName,
+  //     lectureDescription: newVideo.lectureDescription,
 
-      lectureImage: newVideo.lectureImage,
-      attachments: newVideo.attachments,
-    };
+  //     lectureImage: newVideo.lectureImage,
+  //     attachments: newVideo.attachments,
+  //   };
 
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true,
-    };
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //     withCredentials: true,
+  //   };
 
-    try {
-      const response = await axios.post(
-        `/api/course/uploadLectures?courseCode=${courseCode}`
-      );
-      seteSignedUrl(response.data.signedurl);
-      console.log("response 1=>", response);
-    } catch (error) {
-      console.error("Error uploading lecture:", error);
-    }
-  };
+  //   try {
+  //     const response = await axios.post(
+  //       `/api/course/uploadLectures?courseCode=${courseCode}`
+  //     );
+  //     seteSignedUrl(response.data.signedurl);
+  //     console.log("response 1=>", response);
+  //   } catch (error) {
+  //     console.error("Error uploading lecture:", error);
+  //   }
+  // };
 
   const filterVideosByDuration = (duration) => {
     setFilterDuration(duration);
@@ -237,7 +189,7 @@ const UploadVideo = () => {
 
       <div className="controls-container">
         {/* <div className="filters-container"> */}
-          {/* <div className="filter-sort-group">
+        {/* <div className="filter-sort-group">
             <label htmlFor="filter">Filter By:</label>
             <select
               className="select-box"

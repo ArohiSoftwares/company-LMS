@@ -35,13 +35,22 @@ const CourseSchema = new mongoose.Schema(
             }
         },
 
-        videoLink: [
+        video: [
             {
                 public_id: {
                     type: String
                 },
 
                 private_url: {
+                    type: String
+                },
+                lectureName: {
+                    type: String
+                },
+                lectureDescription: {
+                    type: String
+                },
+                lectureImage: {
                     type: String
                 }
             }

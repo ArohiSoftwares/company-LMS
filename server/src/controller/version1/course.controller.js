@@ -22,9 +22,9 @@ dontenv.config();
 const client = new S3Client({
     region: process.env.REGION,
     credentials: {
-        accessKeyId: process.env.ACCESSKEYID,
-        secretAccessKey: process.env.SECRETACCESSKEY
-    }   
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
 });
 
 /// create a course
@@ -99,7 +99,7 @@ const createCourse = asyncHandler(async (req, res) => {
             adminEmail,
 
             courseDuration,
-            courseTeacher: [ courseTeacher ],
+            courseTeacher: [courseTeacher],
 
             courseThumbnail: {
                 public_id: response.public_id,
@@ -107,14 +107,9 @@ const createCourse = asyncHandler(async (req, res) => {
             }
         });
 
-
         // const teacher = await Teacher.findOne({ teacherEmail: courseTeacher });
 
         // teacher.teacherCourseCode.push(courseCode);
-
-
-
-
 
         console.log('After course', course);
 
@@ -215,7 +210,7 @@ const getCourseByCode = asyncHandler(async (req, res) => {
     try {
         const course = await Course.findOne({ courseCode });
 
-        if (!course) {  
+        if (!course) {
             return res.status(404).json(new ApiError(404, 'Course not found'));
         }
 
@@ -361,7 +356,7 @@ const uploadLectures = asyncHandler(async (req, res) => {
 });
 
 const sendSignedUrl = async (req, res) => {
-    const courseCode = 'AIDS';
+    const { courseCode } = req.query;
     const filename = `video-${courseCode}-${Date.now()}.mp4`;
     const ContentType = 'mp4';
     const command = new PutObjectCommand({
@@ -376,6 +371,24 @@ const sendSignedUrl = async (req, res) => {
     res.status(200).json({ signedurl });
 };
 
+const saveVideo = asyncHandler(async (req, res) => {
+    const { videourl } = req.body;
+    const { lectureName, lectureDescription, courseCode } = req.body;
+    const lecture = await Course.findOne({ courseCode });
+    lecture.video.push({
+        public_id: videourl,
+        private_url: `https://d39jdi690r10yx.cloudfront.net/uploads/user/${videourl}`,
+        lectureName,
+        lectureDescription
+    });
+
+    console.log(lecture);
+
+    await lecture.save();
+
+    return res.status(200).json(new ApiResponse(200, 'Lecture created successfully', lecture));
+});
+
 export {
     createCourse,
     updateCourse,
@@ -383,7 +396,7 @@ export {
     sendSignedUrl,
     getCourses,
     getCourseByCode,
-
+    saveVideo,
     // lectures routes
     uploadLectures
 };
