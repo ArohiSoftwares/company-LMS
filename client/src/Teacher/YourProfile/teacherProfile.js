@@ -17,9 +17,9 @@ const TeacherProfile = () => {
     profilePicture: "",
     qualifications: "",
   });
-  const [teacherSubjects,setteacherSubjects] =useState([])
-  const [aadhar, setAadhar] = useState(null);
-  const [panCard, setPanCard] = useState(null);
+  // const [teacherSubjects,setteacherSubjects] =useState([])
+  // const [aadhar, setAadhar] = useState(null);
+  // const [panCard, setPanCard] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +39,7 @@ const TeacherProfile = () => {
       teacherAge: profile.teacherAge,
       teacherAddress: profile.teacherAddress,
       profilePicture: profile.profilePicture,
-      teacherSubjects: teacherSubjects,
+      // teacherSubjects: teacherSubjects,
     };
 
     const config = {
@@ -57,25 +57,25 @@ const TeacherProfile = () => {
 
 
 
-      if (aadhar) {
-        const form = new FormData();
-        form.append("aadhar", aadhar);
-        console.log(form);
-        const aadharResp = await axios.post(
-          `/api/teacher/aadhar`,
-          form,
-          config
-        );
-        console.log("Aadhard resp", aadharResp);
-      }
-      if (panCard) {
-        const panResponse = await axios.post(
-          `/api/teacher/pancard`,
-          panCard,
-          config
-        );
-        console.log("Pan resp", panResponse);
-      }
+      // if (aadhar) {
+      //   const form = new FormData();
+      //   form.append("aadhar", aadhar);
+      //   console.log(form);
+      //   const aadharResp = await axios.post(
+      //     `/api/teacher/aadhar`,
+      //     form,
+      //     config
+      //   );
+      //   console.log("Aadhard resp", aadharResp);
+      // }
+      // if (panCard) {
+      //   const panResponse = await axios.post(
+      //     `/api/teacher/pancard`,
+      //     panCard,
+      //     config
+      //   );
+      //   console.log("Pan resp", panResponse);
+      // }
     } 
     catch (error) {
       console.log(error);
@@ -92,17 +92,17 @@ const TeacherProfile = () => {
     }
   };
 
-  const handleSubjects = (e) => {
-    const check = teacherSubjects.filter((subject) => subject !== e.target.value);
-    console.log(check, e.target.checked)
-    if(e.target.checked === false){
-      const newarr = teacherSubjects.filter((subject) => subject !== e.target.value);
-      setteacherSubjects([...newarr])
-    }
-    if (e.target.checked && check){
-       setteacherSubjects([...teacherSubjects,e.target.value]);
-    };
-  }
+  // const handleSubjects = (e) => {
+  //   const check = teacherSubjects.filter((subject) => subject !== e.target.value);
+  //   console.log(check, e.target.checked)
+  //   if(e.target.checked === false){
+  //     const newarr = teacherSubjects.filter((subject) => subject !== e.target.value);
+  //     setteacherSubjects([...newarr])
+  //   }
+  //   if (e.target.checked && check){
+  //      setteacherSubjects([...teacherSubjects,e.target.value]);
+  //   };
+  // }
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -121,7 +121,7 @@ const TeacherProfile = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
-
+  
   return (
     <div className="maincontainer">
       <Navbar />
@@ -167,8 +167,6 @@ const TeacherProfile = () => {
                   />
                 </div>
               </div>
-
-            {/* 
               <div className="form-group">
                 <label>Qualifications *</label>
                 <textarea
@@ -180,9 +178,69 @@ const TeacherProfile = () => {
                   onChange={handleChange}
                 />
               </div>
+              {/* <div className="w-full">
+                <h3 className="text-white font-bold">Subjects</h3>
 
-            */}
-              
+                <div className="flex gap-4 my-6">
+
+                  <label className="flex gap-0">
+                    <input
+                      type="checkbox"
+                      onChange={handleSubjects}
+                      name="teacherSubjects"
+                      className=""
+                      value={"Wev Development"}
+                    />{" "}
+                    Web Development{" "}
+                  </label>
+
+
+                  <label className="flex gap-0">
+                    <input
+                      type="checkbox"
+                      onChange={handleSubjects}
+                      name="teacherSubjects"
+                      className=""
+                      value={"AIDS"}
+                    />{" "}
+                    AIDS{" "}
+                  </label>
+
+                  <label className="flex gap-0">
+                    <input
+                      type="checkbox"
+                      onChange={handleSubjects}
+                      name="teacherSubjects"
+                      className=""
+                      value={"Data Analytics"}
+                    />{" "}
+                    Data Analytics{" "}
+                  </label>
+
+                  <label className="flex gap-0">
+                    <input
+                      type="checkbox"
+                      onChange={handleSubjects}
+                      name="teacherSubjects"
+                      className=""
+                      value={"Mobile Development"}
+                    />{" "}
+                    Mobile Development{" "}
+                  </label>
+                  <label className="flex gap-0">
+                    <input
+                      type="checkbox"
+                      onChange={handleSubjects}
+                      name="teacherSubjects"
+                      className=""
+                      value={"GenAi"}
+                    />{" "}
+                    GenAi{" "}
+                  </label>
+
+                </div>
+
+              </div> */}
               <div className="form-row">
                 <div className="form-group">
                   <label>Mobile No *</label>
@@ -206,7 +264,6 @@ const TeacherProfile = () => {
                   </select>
                 </div>
               </div>
-
               <div className="form-row">
                 <div className="form-group">
                   <label>Age</label>
@@ -227,41 +284,39 @@ const TeacherProfile = () => {
                   />
                 </div>
               </div>
+              {/* <div className="">
+                <h2>Documents</h2>
 
+                <div className="flex my-4  gap-6 flex-wrap">
+                  <span>
+                    <label>Aadhar card</label>
+                    <input
+                      type="file"
+                      onChange={(e) => setAadhar(e.target.files[0])}
+                      accept=".png, .jpg, .jpeg .pdf"
+                      placeholder="Aadhar card"
+                    />
+                  </span>
+                  <span>
+                    <label>Pan card</label>
+                    <input
+                      type="file"
+                      onChange={(e) => setPanCard(e.target.files[0])}
+                      accept=".png, .jpg, .jpeg .pdf"
+                      placeholder="Pan card"
+                    />
+                  </span>
+                  {/* <span>
+                    <label>aadhar card</label>
+                    <input type="file" placeholder="aadhar card" />
+                  </span>
+                  <span>
+                    <label>aadhar card</label>
+                    <input type="file" placeholder="aadhar card" />
+                  </span> */}
 
-              {/* 
-                <div className=" flex justify-center flex-col items-center">
-                  
-                  <h2 className="text-center">Documents</h2>
-
-                  <div className="flex gap-48 flex-wrap ">
-
-                    <span>
-                      <label>Aadhar card</label>
-                      <input
-                        type="file"
-                        onChange={(e) => setAadhar(e.target.files[0])}
-                        accept=".png, .jpg, .jpeg .pdf"
-                        placeholder="Aadhar card"
-                      />
-                    </span>
-                    
-                    <span>
-                      <label>Pan card</label>
-                      <input
-                        type="file"
-                        onChange={(e) => setPanCard(e.target.files[0])}
-                        accept=".png, .jpg, .jpeg .pdf"
-                        placeholder="Pan card"
-                      />
-                    </span>
-                  
-                  </div>
-                  
-                </div>
-
-              */}
-
+                {/* </div> */}
+              {/* </div> */} 
               <button type="submit" className="save-changes">
                 Save changes
               </button>

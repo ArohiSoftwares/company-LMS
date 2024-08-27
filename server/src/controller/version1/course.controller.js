@@ -24,7 +24,7 @@ const client = new S3Client({
     credentials: {
         accessKeyId: process.env.ACCESSKEYID,
         secretAccessKey: process.env.SECRETACCESSKEY
-    }
+    }   
 });
 
 /// create a course
@@ -215,7 +215,7 @@ const getCourseByCode = asyncHandler(async (req, res) => {
     try {
         const course = await Course.findOne({ courseCode });
 
-        if (!course) {
+        if (!course) {  
             return res.status(404).json(new ApiError(404, 'Course not found'));
         }
 

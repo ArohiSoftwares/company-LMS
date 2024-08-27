@@ -193,8 +193,7 @@ const UploadVideo = () => {
     setFilterCategory(category);
   };
 
-  
-    const filteredVideos = videos.filter((video) => {
+  const filteredVideos = videos.filter((video) => {
     const videoDuration = parseInt(video.duration.split("m")[0]);
     const durationMatch =
       filterDuration === "" ||
@@ -209,7 +208,7 @@ const UploadVideo = () => {
     const categoryMatch =
       filterCategory === "" || video.category === filterCategory;
     return durationMatch && categoryMatch;
-    });
+  });
 
   const handleVideoClick = (video) => {
     const videoElement = document.createElement("video");
@@ -237,10 +236,8 @@ const UploadVideo = () => {
       <Navbar />
 
       <div className="controls-container">
-        <div className="filters-container">
-
-        {/**  
-          <div className="filter-sort-group">
+        {/* <div className="filters-container"> */}
+          {/* <div className="filter-sort-group">
             <label htmlFor="filter">Filter By:</label>
             <select
               className="select-box"
@@ -258,9 +255,6 @@ const UploadVideo = () => {
               <option value="61">Greater than 60 min</option>
             </select>
           </div>
-          */}
-
-
           <div className="filter-sort-group">
             <label htmlFor="sort">Sort By:</label>
             <select
@@ -274,7 +268,7 @@ const UploadVideo = () => {
               <option value="ML">ML</option>
             </select>
           </div>
-        </div>
+        </div> */}
         <div className="upload-btn-container">
           <button onClick={() => setShowForm(true)} className="upload-btn">
             Upload Video
