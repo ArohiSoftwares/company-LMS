@@ -64,7 +64,7 @@ function Courses() {
 
 
   return (
-    <div className="min-h-screen  p-10">
+    <div className="min-h-screen  p-2">
 
   
       <h1 className="text-white text-6xl ml-20 font-bold mb-10">
@@ -72,47 +72,48 @@ function Courses() {
       </h1>
 
 
-     
-     <div className="flex flex-wrap justify-center align-center gap-8">
 
-        {courses.map((course) => (
-          <div
-            key={course._id}
-            className="bg-gray-700 w-[25rem] text-white rounded-lg shadow-lg overflow-hidden shadow-gray-200"
-          >
-            <img
-              src={course.courseThumbnail.private_url}
-              alt={course.title}
-              className="w-full h-[250px]"
-              height="200px"
-            />
+     <div className="flex flex-wrap justify-center gap-8">
 
-            <div className="p-5">
-              <h2 className="text-2xl font-bold mt-4 mb-2">{course.courseName}</h2>
-              
-              <hr />
-              <button className="text-cyan-400 mt-7 font-semibold text-xl ">
-                {course.courseTeacher.map((teacher) => {
-                  return <div key={teacher.id}>{teacher}</div>
-                })}
-              </button>
+      {courses.map((course) => (
+        <div
+          key={course._id}
+          className="bg-gray-700 text-white rounded-lg shadow-lg overflow-hidden shadow-gray-200"
+          style={{width:"25rem"}}
+        >
+          <img
+            src={course.courseThumbnail.private_url}
+            alt={course.title}
+            className="w-full h-[250px]"
+            height="200px"
+          />
 
-              <div className="mt-7 flex flex-col justify-between mb-2  text-gray-300  text-xl font-bold">
-                <div> By {course.adminEmail}</div>
-                <div className="text-green-300"> ₹ {course.coursePrice}</div>
-              </div>
+          <div className="p-5">
+            <h2 className="text-2xl font-bold mt-4 mb-2">{course.courseName}</h2>
+            
+            <hr />
+            <button className="text-cyan-400 mt-7 font-semibold text-xl ">
+              {course.courseTeacher.map((teacher) => {
+                return <div key={teacher.id}>{teacher}</div>
+              })}
+            </button>
+
+            <div className="mt-7 flex flex-col justify-between mb-2  text-gray-300  text-xl font-bold">
+              <div> By {course.adminEmail}</div>
+              <div className="text-green-300"> ₹ {course.coursePrice}</div>
             </div>
-           
-            <Link to={`/overview/${course.courseCode}`}>
-
-              <div className="text-center text-black bg-cyan-400  font-bold p-2 ml-4 mr-4 mb-2  text-2xl  rounded">
-                <button>Enrolled in Course</button>
-              </div>
-
-            </Link>
-
           </div>
-        ))}
+          
+          <Link to={`/overview/${course.courseCode}`}>
+
+            <div className="text-center text-black bg-cyan-400  font-bold p-2 ml-4 mr-4 mb-2  text-2xl  rounded">
+              <button>Enrolled in Course</button>
+            </div>
+
+          </Link>
+
+        </div>
+      ))}
         
       </div>
  

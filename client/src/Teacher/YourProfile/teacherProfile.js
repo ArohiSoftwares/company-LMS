@@ -167,6 +167,8 @@ const TeacherProfile = () => {
                   />
                 </div>
               </div>
+
+            {/* 
               <div className="form-group">
                 <label>Qualifications *</label>
                 <textarea
@@ -178,69 +180,9 @@ const TeacherProfile = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="w-full">
-                <h3 className="text-white font-bold">Subjects</h3>
 
-                <div className="flex gap-4 my-6">
-
-                  <label className="flex gap-0">
-                    <input
-                      type="checkbox"
-                      onChange={handleSubjects}
-                      name="teacherSubjects"
-                      className=""
-                      value={"Wev Development"}
-                    />{" "}
-                    Web Development{" "}
-                  </label>
-
-
-                  <label className="flex gap-0">
-                    <input
-                      type="checkbox"
-                      onChange={handleSubjects}
-                      name="teacherSubjects"
-                      className=""
-                      value={"AIDS"}
-                    />{" "}
-                    AIDS{" "}
-                  </label>
-
-                  <label className="flex gap-0">
-                    <input
-                      type="checkbox"
-                      onChange={handleSubjects}
-                      name="teacherSubjects"
-                      className=""
-                      value={"Data Analytics"}
-                    />{" "}
-                    Data Analytics{" "}
-                  </label>
-
-                  <label className="flex gap-0">
-                    <input
-                      type="checkbox"
-                      onChange={handleSubjects}
-                      name="teacherSubjects"
-                      className=""
-                      value={"Mobile Development"}
-                    />{" "}
-                    Mobile Development{" "}
-                  </label>
-                  <label className="flex gap-0">
-                    <input
-                      type="checkbox"
-                      onChange={handleSubjects}
-                      name="teacherSubjects"
-                      className=""
-                      value={"GenAi"}
-                    />{" "}
-                    GenAi{" "}
-                  </label>
-
-                </div>
-
-              </div>
+            */}
+              
               <div className="form-row">
                 <div className="form-group">
                   <label>Mobile No *</label>
@@ -264,6 +206,7 @@ const TeacherProfile = () => {
                   </select>
                 </div>
               </div>
+
               <div className="form-row">
                 <div className="form-group">
                   <label>Age</label>
@@ -284,39 +227,41 @@ const TeacherProfile = () => {
                   />
                 </div>
               </div>
-              <div className="">
-                <h2>Documents</h2>
 
-                <div className="flex my-4  gap-6 flex-wrap">
-                  <span>
-                    <label>Aadhar card</label>
-                    <input
-                      type="file"
-                      onChange={(e) => setAadhar(e.target.files[0])}
-                      accept=".png, .jpg, .jpeg .pdf"
-                      placeholder="Aadhar card"
-                    />
-                  </span>
-                  <span>
-                    <label>Pan card</label>
-                    <input
-                      type="file"
-                      onChange={(e) => setPanCard(e.target.files[0])}
-                      accept=".png, .jpg, .jpeg .pdf"
-                      placeholder="Pan card"
-                    />
-                  </span>
-                  {/* <span>
-                    <label>aadhar card</label>
-                    <input type="file" placeholder="aadhar card" />
-                  </span>
-                  <span>
-                    <label>aadhar card</label>
-                    <input type="file" placeholder="aadhar card" />
-                  </span> */}
 
+              {/* 
+                <div className=" flex justify-center flex-col items-center">
+                  
+                  <h2 className="text-center">Documents</h2>
+
+                  <div className="flex gap-48 flex-wrap ">
+
+                    <span>
+                      <label>Aadhar card</label>
+                      <input
+                        type="file"
+                        onChange={(e) => setAadhar(e.target.files[0])}
+                        accept=".png, .jpg, .jpeg .pdf"
+                        placeholder="Aadhar card"
+                      />
+                    </span>
+                    
+                    <span>
+                      <label>Pan card</label>
+                      <input
+                        type="file"
+                        onChange={(e) => setPanCard(e.target.files[0])}
+                        accept=".png, .jpg, .jpeg .pdf"
+                        placeholder="Pan card"
+                      />
+                    </span>
+                  
+                  </div>
+                  
                 </div>
-              </div>
+
+              */}
+
               <button type="submit" className="save-changes">
                 Save changes
               </button>
