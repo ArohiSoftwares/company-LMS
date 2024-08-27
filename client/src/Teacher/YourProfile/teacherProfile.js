@@ -17,9 +17,9 @@ const TeacherProfile = () => {
     profilePicture: "",
     qualifications: "",
   });
-  const [teacherSubjects,setteacherSubjects] =useState([])
-  const [aadhar, setAadhar] = useState(null);
-  const [panCard, setPanCard] = useState(null);
+  // const [teacherSubjects,setteacherSubjects] =useState([])
+  // const [aadhar, setAadhar] = useState(null);
+  // const [panCard, setPanCard] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +39,7 @@ const TeacherProfile = () => {
       teacherAge: profile.teacherAge,
       teacherAddress: profile.teacherAddress,
       profilePicture: profile.profilePicture,
-      teacherSubjects: teacherSubjects,
+      // teacherSubjects: teacherSubjects,
     };
 
     const config = {
@@ -57,25 +57,25 @@ const TeacherProfile = () => {
 
 
 
-      if (aadhar) {
-        const form = new FormData();
-        form.append("aadhar", aadhar);
-        console.log(form);
-        const aadharResp = await axios.post(
-          `/api/teacher/aadhar`,
-          form,
-          config
-        );
-        console.log("Aadhard resp", aadharResp);
-      }
-      if (panCard) {
-        const panResponse = await axios.post(
-          `/api/teacher/pancard`,
-          panCard,
-          config
-        );
-        console.log("Pan resp", panResponse);
-      }
+      // if (aadhar) {
+      //   const form = new FormData();
+      //   form.append("aadhar", aadhar);
+      //   console.log(form);
+      //   const aadharResp = await axios.post(
+      //     `/api/teacher/aadhar`,
+      //     form,
+      //     config
+      //   );
+      //   console.log("Aadhard resp", aadharResp);
+      // }
+      // if (panCard) {
+      //   const panResponse = await axios.post(
+      //     `/api/teacher/pancard`,
+      //     panCard,
+      //     config
+      //   );
+      //   console.log("Pan resp", panResponse);
+      // }
     } 
     catch (error) {
       console.log(error);
@@ -92,17 +92,17 @@ const TeacherProfile = () => {
     }
   };
 
-  const handleSubjects = (e) => {
-    const check = teacherSubjects.filter((subject) => subject !== e.target.value);
-    console.log(check, e.target.checked)
-    if(e.target.checked === false){
-      const newarr = teacherSubjects.filter((subject) => subject !== e.target.value);
-      setteacherSubjects([...newarr])
-    }
-    if (e.target.checked && check){
-       setteacherSubjects([...teacherSubjects,e.target.value]);
-    };
-  }
+  // const handleSubjects = (e) => {
+  //   const check = teacherSubjects.filter((subject) => subject !== e.target.value);
+  //   console.log(check, e.target.checked)
+  //   if(e.target.checked === false){
+  //     const newarr = teacherSubjects.filter((subject) => subject !== e.target.value);
+  //     setteacherSubjects([...newarr])
+  //   }
+  //   if (e.target.checked && check){
+  //      setteacherSubjects([...teacherSubjects,e.target.value]);
+  //   };
+  // }
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -121,7 +121,7 @@ const TeacherProfile = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
-
+  
   return (
     <div className="maincontainer">
       <Navbar />
@@ -178,7 +178,7 @@ const TeacherProfile = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <h3 className="text-white font-bold">Subjects</h3>
 
                 <div className="flex gap-4 my-6">
@@ -240,7 +240,7 @@ const TeacherProfile = () => {
 
                 </div>
 
-              </div>
+              </div> */}
               <div className="form-row">
                 <div className="form-group">
                   <label>Mobile No *</label>
@@ -284,7 +284,7 @@ const TeacherProfile = () => {
                   />
                 </div>
               </div>
-              <div className="">
+              {/* <div className="">
                 <h2>Documents</h2>
 
                 <div className="flex my-4  gap-6 flex-wrap">
@@ -315,8 +315,8 @@ const TeacherProfile = () => {
                     <input type="file" placeholder="aadhar card" />
                   </span> */}
 
-                </div>
-              </div>
+                {/* </div> */}
+              {/* </div> */} 
               <button type="submit" className="save-changes">
                 Save changes
               </button>

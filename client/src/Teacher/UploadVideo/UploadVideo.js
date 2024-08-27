@@ -236,8 +236,8 @@ const UploadVideo = () => {
       <Navbar />
 
       <div className="controls-container">
-        <div className="filters-container">
-          <div className="filter-sort-group">
+        {/* <div className="filters-container"> */}
+          {/* <div className="filter-sort-group">
             <label htmlFor="filter">Filter By:</label>
             <select
               className="select-box"
@@ -268,7 +268,7 @@ const UploadVideo = () => {
               <option value="ML">ML</option>
             </select>
           </div>
-        </div>
+        </div> */}
         <div className="upload-btn-container">
           <button onClick={() => setShowForm(true)} className="upload-btn">
             Upload Video

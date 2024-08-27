@@ -108,6 +108,7 @@ const verifyPaymentForCourse = asyncHandler(async (req, res) => {
             razorpay_signature,
             status: 'paid'
         });
+        await Student.findByIdAndUpdate('')
 
         console.log(payment);
 
