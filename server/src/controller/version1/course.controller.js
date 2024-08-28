@@ -242,6 +242,7 @@ const deleteCourse = asyncHandler(async (req, res) => {
     }
 });
 
+/// using ffmpeg to convert video to hls format
 const uploadLectures = asyncHandler(async (req, res) => {
     const videoSegmentsPath = [];
     let fullvideopath = '';
@@ -355,9 +356,12 @@ const uploadLectures = asyncHandler(async (req, res) => {
     }
 });
 
+
 const sendSignedUrl = async (req, res) => {
     const { courseCode } = req.query;
+
     const filename = `video-${courseCode}-${Date.now()}.mp4`;
+    
     const ContentType = 'mp4';
     const command = new PutObjectCommand({
         Bucket: 'videostreaming31',
@@ -371,10 +375,15 @@ const sendSignedUrl = async (req, res) => {
     res.status(200).json({ signedurl });
 };
 
+
 const saveVideo = asyncHandler(async (req, res) => {
+
     const { videourl } = req.body;
+
     const { lectureName, lectureDescription, courseCode } = req.body;
+
     const lecture = await Course.findOne({ courseCode });
+
     lecture.video.push({
         public_id: videourl,
         private_url: `https://d39jdi690r10yx.cloudfront.net/uploads/user/${videourl}`,
@@ -382,11 +391,25 @@ const saveVideo = asyncHandler(async (req, res) => {
         lectureDescription
     });
 
+    // create lecture in database
+    const lecture1 = await Lecture.create({
+        lectureName,
+        lectureDescription,
+        courseCode,
+        teacherEmail,
+        videoLink: {
+            public_id: videourl,
+            private_url: `https://d39jdi690r10yx.cloudfront.net/uploads/user/${videourl}`
+        }
+    })
+
     console.log(lecture);
 
     await lecture.save();
 
-    return res.status(200).json(new ApiResponse(200, 'Lecture created successfully', lecture));
+    return res
+    .status(200)
+    .json(new ApiResponse(200, 'Lecture created successfully', lecture));
 });
 
 export {
