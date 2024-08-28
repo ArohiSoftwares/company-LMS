@@ -141,11 +141,8 @@ const studentUpdate = asyncHandler(async (req, res, next) => {
 
         await user.save();
 
-        return res
-        .status(200)
-        .json(new ApiResponse(200, 'Student updated successfully', user));
-    } 
-    catch (error) {
+        return res.status(200).json(new ApiResponse(200, 'Student updated successfully', user));
+    } catch (error) {
         return res.status(400).json(new ApiError(400, error.message));
     }
 });
@@ -180,7 +177,6 @@ const getStudentProfile = asyncHandler(async (req, res) => {
 });
 
 const getMyCourses = asyncHandler(async (req, res, next) => {
-    
     const { studentEmail } = req.user;
 
     try {
@@ -190,39 +186,30 @@ const getMyCourses = asyncHandler(async (req, res, next) => {
             return res.status(400).json(new ApiError(400, 'Invalid email or password'));
         }
 
-        
+        const student = await Enrollment.findOne({ studentEmail });
 
-        const student = await Enrollment.findOne({studentEmail});
-
-        console.log("Student => ", student);
+        console.log('Student => ', student);
 
         const studentCourses = student.studentCourses;
 
-        console.log("studentCourses => ", studentCourses);
+        console.log('studentCourses => ', studentCourses);
 
-        const enrolledCourses = await Course.find({courseCode: {$in: studentCourses}});
+        const enrolledCourses = await Course.find({ courseCode: { $in: studentCourses } });
 
-        console.log("enrolled Courses => ",enrolledCourses);
-        
-        
-        return res
-        .status(200)
-        .json(new ApiResponse(200, 'Student courses fetched successfully', enrolledCourses));
-        
-       
-    }   
-    catch (error) {
-        
+        console.log('enrolled Courses => ', enrolledCourses);
+
+        return res.status(200).json(new ApiResponse(200, 'Student courses fetched successfully', enrolledCourses));
+    } catch (error) {
         console.log(error);
         return res.status(400).json(new ApiError(400, error.message));
     }
 });
 
 const getLecturesByCourse = asyncHandler(async (req, res, next) => {
-    const { courseCode } = req.query;
-
+    const { courseCode } = req.body;
+    console.log(req.body);
     try {
-        const lectures = await Lecture.find({ courseCode });
+        const lectures = await Course.find({ courseCode });
 
         return res.status(200).json(new ApiResponse(200, 'Lectures fetched successfully', lectures));
     } catch (error) {

@@ -14,7 +14,7 @@ function ViewLecture() {
   const [playing, setPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("");
 
-  const playVideo = (video) => {
+  const playVideo = (data, video) => {
     setActiveVideo(video);
     setPlaying(true);
   };
@@ -46,35 +46,46 @@ function ViewLecture() {
     {
       lectureName: "",
       lectureDescription: "",
-      teacherName: "",
-      attachments: "",
-      doubts: "",
-      videoLink: "",
+      lectureVideo: "",
+      lectureImage: "",
     },
   ]);
 
   const fetchLectureList = async () => {
     try {
-      const response = await axios.get(
-        `/api/student/getLecturesByCourse/${courseCode}`
+      // form-urlencoded
+      const code = new URLSearchParams();
+      code.append("courseCode", courseCode);
+      const response = await axios.post(
+        `/api/student/getLecturesByCourse/`,
+        code
       );
-
+      response.data.data?.map((data) => {
+        setLectureDetails([
+          ...lectureDetails,
+          {
+            lectureName: data.video[0].lectureName,
+            lectureDescription: data.video[0].lectureDescription,
+            lectureVideo: data.video[0].private_url,
+          },
+        ]);
+      });
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchLectureDetails = async (lectureCode) => {
-    try {
-      const response = await axios.get(
-        `/api/student/getLectureDetails/${lectureCode}`
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchLectureDetails = async (lectureCode) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `/api/student/getLectureDetails/${lectureCode}`
+  //     );
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchLectureList();
@@ -86,15 +97,11 @@ function ViewLecture() {
         <div className="w-full md:w-3/4 flex flex-col items-center bg-gray-900 p-5">
           <div className="w-full md:h-96">
             <ReactPlayer
-              ref={(player) => {
-                activeVideo.ref = player;
-              }}
-              lectureImage={activeVideo.lectureImage}
+              url={activeVideo}
               playing={playing}
               controls
-              width="100%"
-              height="5rem"
               className="rounded"
+              
             />
           </div>
 
@@ -167,21 +174,13 @@ function ViewLecture() {
       )}
 
       <ul className="space-y-5 py-5 mx-auto md:w-1/4 w-full max-w-screen-md">
-        {lectureList.map((data, i) => (
-          <li
+        {lectureDetails.map((data, i) => (
+          <button
             key={i}
+            onClick={() => playVideo(data, data.lectureVideo)}
             className="flex flex-col md:flex-row items-center shadow-lg gap-5 md:gap-10 px-5 md:px-10 bg-gray-800 rounded-lg hover:bg-slate-400"
-            onClick={() => fetchLectureDetails()}
+            // onClick={() => fetchLectureDetails()}
           >
-            <div className="flex-shrink-0">
-              <button onClick={() => playVideo(data)}>
-                <img
-                  src={data.thumbnail}
-                  alt={data.lectureName}
-                  className="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-0 rounded"
-                />
-              </button>
-            </div>
             <div className="text-center md:text-left">
               <h3 className="text-xl md:text-2xl font-medium mb-2 text-white">
                 {data.lectureName}
@@ -191,7 +190,7 @@ function ViewLecture() {
               </h5>
               <p className="text-gray-500">{data.channel}</p>
             </div>
-          </li>
+          </button>
         ))}
       </ul>
     </div>
