@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/User/userSlice";
+import { message } from "react-message-popup";
 
 function Login() {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ function Login() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message);
     }
   };
 

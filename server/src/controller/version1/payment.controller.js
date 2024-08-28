@@ -37,87 +37,118 @@ const createPaymentForCourse = asyncHandler(async (req, res) => {
     }
 });
 
+
 const verifyPaymentForCourse = asyncHandler(async (req, res) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    
+    const {razorpay_order_id, razorpay_payment_id, razorpay_signature} = req.body;
 
     console.log(req.body);
 
     const { studentEmail } = req.user;
-    const { courseCode } = req.params || req.query;
+    const {courseCode} = req.params  || req.query;
+    
 
-    console.log('req.user => ', req.user);
+    console.log("req.user => ",req.user);
 
-    console.log('req.query', req.query);
-    console.log('req.params', req.params);
+    console.log("req.query",req.query);
+    console.log("req.params",req.params);
+
+    
 
     try {
-        const body = razorpay_order_id + '|' + razorpay_payment_id;
 
+
+        const body = razorpay_order_id + "|" + razorpay_payment_id 
+
+        
         const expectedSignature = crypto
-            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(body)
-            .digest('hex');
+            .digest("hex");
+
 
         const verified = expectedSignature === razorpay_signature;
 
-        if (!verified) {
-            return res.status(400).json(new ApiError(400, 'Signature is not verified your session is expired'));
+        if(!verified){
+            return res.status(400).json(new ApiError(400, "Signature is not verified your session is expired"));
         }
 
-        console.log('after verification of payement => ', verified);
+
+        console.log("after verification of payement => ",verified);
 
         const student = await Student.findOne({ studentEmail });
 
         if (!student) {
-            return res.status(400).json(new ApiError(400, 'Student not found'));
+            return res.status(400).json(new ApiError(400, "Student not found"));
         }
 
-        console.log('after verification of student => ', student);
+        console.log("after verification of student => ",student);
+
 
         const checkCourse = await Course.findOne({ courseCode: courseCode });
 
-        if (!checkCourse) {
-            return res.status(400).json(new ApiError(400, 'Course not found'));
+        
+ 
+        if(!checkCourse){
+            return res.status(400).json(new ApiError(400, "Course not found"));
         }
 
-        console.log('after verification of course => ', checkCourse);
+        console.log("after verification of course => ",checkCourse);
 
-        const enrolled = await Enrollment.findOne({ studentEmail });
 
-        if (enrolled) {
+        const enrolled = await Enrollment.findOne({studentEmail})
+
+        if(enrolled) {
+
             enrolled.studentCourses.push(checkCourse.courseCode);
             await enrolled.save();
-        } else {
+        }
+        else {
             const enroll = await Enrollment.create({
-                studentEmail,
-                studentCourses: [courseCode]
-            });
 
-            console.log('enroll => ', enroll);
+                studentEmail,
+                studentCourses: [
+                    courseCode
+                ]
+    
+            })
+
+            console.log("enroll => ",enroll);
             await enroll.save();
+
+    
         }
 
-        console.log('enrolled => ', enrolled);
+        console.log("enrolled => ", enrolled);
+
+
 
         const payment = await Payment.create({
-            studentEmail: studentEmail,
+            studentEmail : studentEmail,
             courseCode,
             razorpay_order_id,
             razorpay_payment_id,
-            transactionDate: Date.now(),
+            transactionDate : Date.now(),
             razorpay_signature,
-            status: 'paid'
-        });
-        await Student.findByIdAndUpdate('')
+            status : 'paid'
+            
+        })
 
         console.log(payment);
 
-        return res.status(200).redirect(`http://localhost:3000`);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(new ApiError(500, error.message));
+
+       return res
+           .status(200)
+           .redirect(`http://localhost:3000/student/mycourses`);
+           
+    } 
+
+    catch (error) {
+       console.log(error);
+       return res.status(500).json(new ApiError(500, error.message));
     }
-});
+
+})
 
 const getUserPaymentbyCourseCode = asyncHandler(async (req, res) => {
     const { courseCode } = req.body;

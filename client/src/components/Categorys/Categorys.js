@@ -70,6 +70,7 @@ function category() {
         <span className="text-white text-2xl  ml-20 font-bold  ">Discover Your Passion</span>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ml-20">
           {category.map((category) => (
+
             <div
               key={category.id}
               className=" bg-gray-600 shadow-slate-800 h-[20rem] hover:shadow-slate-500 text-white rounded-lg shadow-lg overflow-hidden"
@@ -88,6 +89,7 @@ function category() {
                 </button>
               </div>
             </div>
+            
           ))}
         </div>
       </div>

@@ -6,7 +6,7 @@ function Footer() {
       <div className="container mx-auto flex flex-col md:flex-row justify-between px-4">
         {/* Logo and Social Media Links */}
         <div className="mb-8 md:mb-0">
-          <img src="https://media.licdn.com/dms/image/D560BAQFtWM46bCiJfQ/company-logo_200_200/0/1695197175289?e=2147483647&v=beta&t=46cYmda122C_egnedarsDunJhoZgjhMYaeUJixhrbXM" alt="Arohi Software Logo" className="w-32 mb-4" />
+          <img src="https://res.cloudinary.com/dsh5742fk/image/upload/v1724819986/wrgfrraabefqsxvl4cse.png" alt="Arohi Software Logo" className="w-32 mb-4" />
          <p className='mb-3 font-bold text-2xl'> Arohi Software</p>
           <div className="flex gap-4">
            

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/User/userSlice";
 import { useMediaQuery } from '@mui/material';
+import axios from "axios";
+import { message } from "react-message-popup";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -12,6 +14,7 @@ function classNames(...classes) {
 
 function Navbar() {
 
+  const [profilePhoto, setProfilePhoto] = useState("");
 
   
   
@@ -42,10 +45,59 @@ function Navbar() {
   ];
 
   const logouthandler = async () => {
-    // const res = await axios.get('/api/student/logout')
-    // console.log(res.data);
-    dispatch(logout());
+
+    try {
+      const response = await axios.post('/api/student/logout')
+  
+      console.log(response.data);
+
+      dispatch(logout());
+    } 
+
+    catch (error) {
+      message.error(error?.message);
+    }
+
   };
+
+  const fetchProfile = async () => {
+
+    try {
+
+      if(isAuth) {
+
+        if(!teacher) {
+
+          const response = await axios.get(`/api/student/getProfile`);
+
+          console.log("get all courses response=>", response);
+          console.log("response.data =>", response.data);
+          console.log("response.data.data =>", response.data.data);
+    
+          setProfilePhoto(response.data.data?.studentAvatar?.public_url);
+        }
+        else {
+          const response = await axios.get(`/api/teacher/getProfile`);
+
+          console.log("get all courses response=>", response);
+          console.log("response.data =>", response.data);
+          console.log("response.data.data =>", response.data.data);
+    
+          setProfilePhoto(response.data.data?.studentAvatar?.public_url);
+        }
+      }
+     
+    } 
+    catch (error) {
+      console.log(error);
+      window.location.href = "/login";
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchProfile();
+  },[2])
 
   
   return (
@@ -92,7 +144,7 @@ function Navbar() {
                 <div className="flex items-center mr-48">
                   
                   <span> <img src="./arohiLogo.png" alt="arohiLogo" className="h-12 w-12 rounded-full" /> </span>
-                  <span className="text-4xl font-bold text-white">Arohi Software</span>
+                  <span className="text-4xl ml-4 font-bold text-white">AROHI SOFTWARES</span>
                   
                 </div>
 
@@ -138,8 +190,8 @@ function Navbar() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-12 w-12 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={profilePhoto}
+                        alt="Avatar"
                       />
                     </Menu.Button>
                   </div>

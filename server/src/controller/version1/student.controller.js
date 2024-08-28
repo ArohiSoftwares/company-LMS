@@ -77,7 +77,27 @@ const studentLogin = asyncHandler(async (req, res, next) => {
     }
 });
 
+
+const studentLogout = asyncHandler(async (req, res, next) => {
+
+    try {
+    
+
+        return res
+            .status(200)
+            .clearCookie('studentToken', cookieOptions)
+            .json(new ApiResponse(200, 'Student logout successfully'));
+        
+    } 
+    catch (error) {
+    
+        return res.status(400).json(new ApiError(400, error.message));
+    }
+})
+
+
 const studentUpdate = asyncHandler(async (req, res, next) => {
+
     const { studentEmail } = req.user;
 
     const { studentFullName, studentAge, studentGender, studentAddress, studentPhoneNumber } = req.body;
@@ -105,12 +125,19 @@ const studentUpdate = asyncHandler(async (req, res, next) => {
         }
 
         if (req.file) {
-            console.log(req.file);
-            const uploadedFile = await uploadOnCloudinary(req.file.path);
+
+            const path = req.file.path;
+
+
+            const uploadedFile = await uploadOnCloudinary(path);
+
 
             user.studentAvatar.public_id = uploadedFile.public_id;
-            user.studentAvatar.public_url = uploadedFile.public_url;
+            user.studentAvatar.public_url = uploadedFile?.url;
+
+
         }
+
 
         await user.save();
 
@@ -209,6 +236,7 @@ export {
     getStudentProfile,
     studentUpdate,
     studentDelete,
+    studentLogout,
 
     /// course lectures
     getLecturesByCourse,

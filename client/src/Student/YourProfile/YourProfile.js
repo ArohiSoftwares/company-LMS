@@ -4,6 +4,7 @@ import "./YourProfile.css";
 
 import axios from "axios";
 import Navbar from "../../components/Navbar/Navbar";
+import { message } from 'react-message-popup'
 
 const YourProfile = () => {
   const loginUser = "student";
@@ -60,6 +61,7 @@ const YourProfile = () => {
     }
   };
 
+
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
 
@@ -87,10 +89,16 @@ const YourProfile = () => {
     try {
       const response = await axios.put(`/api/student/update`, formData, config);
       console.log("response =>", response);
-    } catch (error) {
-      console.log(error);
-      window.location.href = "/login";
+      message.success("Profile picture updated successfully");
+
+      fetchProfile();
     }
+    catch (error) {
+    
+      console.log(error);
+      message.error(error.message);
+    }
+
   };
 
   useEffect(() => {
@@ -107,7 +115,7 @@ const YourProfile = () => {
               <div className="avatar-container">
                 <Avatar
                   src={
-                    profile?.studentAvatar || profile?.studentAvatar?.public_url
+                    profile?.studentAvatar?.public_url || profile?.studentAvatar?.url
                   }
                   alt="Profile"
                   className="avatar"

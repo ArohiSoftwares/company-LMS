@@ -3,7 +3,7 @@ import multer from 'multer';
 const storage = multer.diskStorage({
 
     destination: (req, file, cb) => { /// where to upload the file 
-        cb(null, './uploads/lectures');
+        cb(null, './uploads');
     },
 
     filename: (req, file, cb) => {  /// set the file name in the server upload folder
