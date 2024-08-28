@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import { MailCheck } from "lucide-react";
 import axios from "axios";
+import { message } from "react-message-popup";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically call an API to handle the password reset
-    const res = await axios.post("/api/type/forgetpassword", {
-      email,
-    });
-    console.log(res.data)
-    console.log("Password reset requested for:", email);
+    try {
+      // Here you would typically call an API to handle the password reset
+      const res = await axios.post("/api/type/forgetpassword", {
+        email,
+      });
+      console.log(res.data)
+      console.log("Password reset requested for:", email);
+      message.success("Password reset requested for: " + email);
+    } 
+    catch (error) {
+      message.error(error.message);  
+    }
   };
 
   return (
@@ -22,7 +29,7 @@ const ForgotPassword = () => {
           Forgot your password?
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Enter your email address and we'll send you a link to reset your
+          Enter your email address and we ll send you a link to reset your
           password.
         </p>
       </div>

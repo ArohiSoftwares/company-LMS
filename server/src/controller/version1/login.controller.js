@@ -89,10 +89,13 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 });
 
+
 const forgetPassword = asyncHandler(async (req, res) => {
+
     const { email } = req.body;
     console.log(email);
-    let transporter = nodemailer.createTransport({
+
+    let transporter = await nodemailer.createTransport({
         host: 'smtp.example.com',
         port: 587,
         secure: false, // Use TLS
@@ -101,6 +104,11 @@ const forgetPassword = asyncHandler(async (req, res) => {
             pass: 'your_password'
         }
     });
+
+    if(!transporter) {
+        return res.status(500).json({ error: 'Failed to send password reset email' });
+    }
+
     try {
         // Generate a unique reset token
         const resetToken = crypto.randomBytes(20).toString('hex');
@@ -112,6 +120,8 @@ const forgetPassword = asyncHandler(async (req, res) => {
             token: resetToken
         });
 
+        await reset.save();
+
         try {
             let info = await transporter.sendMail({
                 from: 'LMS Reset Password',
@@ -122,15 +132,22 @@ const forgetPassword = asyncHandler(async (req, res) => {
             });
 
             console.log('Password reset email sent: %s', info.messageId);
-            res.json({ message: 'Password reset link sent to your email' });
-        } catch (error) {
+
+            return res.json({ message: 'Password reset link sent to your email' });
+
+        } 
+        catch (error) {
             console.error('Error sending password reset email:', error);
-            res.status(500).json({ error: 'Failed to send password reset email' });
+            return res
+            .status(500)
+            .json({ error: 'Failed to send password reset email' });
         }
-    } catch (err) {
+    } 
+    catch (err) {
         console.log('Error ', err);
         res.status(500).json({ error: 'Failed to send password reset email' });
     }
+
 });
 
 const resetPassword = asyncHandler(async (req, res) => {

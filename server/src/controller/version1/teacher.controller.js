@@ -5,6 +5,7 @@ import { asyncHandler } from '../../utils/asyncHandler.js';
 import bcrypt from 'bcrypt';
 import { Course } from '../../models/course.model.js';
 import { documentUpload } from '../../helpers/lecture.cloudinary.js';
+import uploadOnCloudinary from '../../helpers/cloudinary.js';
 
 const cookieOptions = {
     httpOnly: true,
@@ -13,6 +14,7 @@ const cookieOptions = {
 };
 
 const teacherUpdate = asyncHandler(async (req, res) => {
+
     const { teacherEmail } = req.user;
 
     const { teacherFullName, teacherAge, teacherGender, teacherPhoneNumber, teacherSubjects, qualifications } =
@@ -51,6 +53,18 @@ const teacherUpdate = asyncHandler(async (req, res) => {
         if (qualifications){
             user.teacherQualifications = qualifications;
         } 
+
+        console.log("req.file => "+req.file);
+        console.log("req.files => "+req.files);
+
+        if(req.file) {
+
+            const path = req.file.path;
+
+            const upload = await uploadOnCloudinary(path);
+
+            user.teacherProfile = upload?.url;
+        }
         
         await user.save();
 
@@ -146,6 +160,7 @@ const uploadAadhar = asyncHandler(async (req, res) => {
         return res.status(500).json(new ApiError(500, error.message));
     }
 });
+
 const uploadPan = asyncHandler(async (req, res) => {
     const { teacherEmail } = req.user;
     try {
@@ -168,5 +183,6 @@ const uploadPan = asyncHandler(async (req, res) => {
         return res.status(500).json(new ApiError(500, error.message));
     }
 });
+
 
 export { getTeacherCourses, getTeacherProfile, teacherUpdate, teacherDelete, uploadAadhar, uploadPan };

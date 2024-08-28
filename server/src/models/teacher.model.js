@@ -14,6 +14,10 @@ const TeacherSchema = new mongoose.Schema(
             // unique: true,
         },
 
+        teacherProfile: {
+            type: String
+        },
+
         adminEmail: {
             type: String
         },

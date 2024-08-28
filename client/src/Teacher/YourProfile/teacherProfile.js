@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import "./teacherProfile.css";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import Navbar from "../../components/Navbar/Navbar";
+import { message } from "react-message-popup";
 
 const TeacherProfile = () => {
   const loginUser = "teacher";
@@ -13,13 +14,12 @@ const TeacherProfile = () => {
     teacherPhoneNumber: "",
     teacherAddress: "",
     teacherAge: "",
+
     teacherGender: "",
-    profilePicture: "",
+    teacherProfile: "",
     qualifications: "",
   });
-  // const [teacherSubjects,setteacherSubjects] =useState([])
-  // const [aadhar, setAadhar] = useState(null);
-  // const [panCard, setPanCard] = useState(null);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,25 +57,6 @@ const TeacherProfile = () => {
 
 
 
-      // if (aadhar) {
-      //   const form = new FormData();
-      //   form.append("aadhar", aadhar);
-      //   console.log(form);
-      //   const aadharResp = await axios.post(
-      //     `/api/teacher/aadhar`,
-      //     form,
-      //     config
-      //   );
-      //   console.log("Aadhard resp", aadharResp);
-      // }
-      // if (panCard) {
-      //   const panResponse = await axios.post(
-      //     `/api/teacher/pancard`,
-      //     panCard,
-      //     config
-      //   );
-      //   console.log("Pan resp", panResponse);
-      // }
     } 
     catch (error) {
       console.log(error);
@@ -84,7 +65,7 @@ const TeacherProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get(`/api/teacher/getProfile/`);
+      const response = await axios.get(`/api/teacher/getProfile`);
       console.log("get profile response =>", response);
       setProfile(response.data.data);
     } catch (error) {
@@ -92,20 +73,12 @@ const TeacherProfile = () => {
     }
   };
 
-  // const handleSubjects = (e) => {
-  //   const check = teacherSubjects.filter((subject) => subject !== e.target.value);
-  //   console.log(check, e.target.checked)
-  //   if(e.target.checked === false){
-  //     const newarr = teacherSubjects.filter((subject) => subject !== e.target.value);
-  //     setteacherSubjects([...newarr])
-  //   }
-  //   if (e.target.checked && check){
-  //      setteacherSubjects([...teacherSubjects,e.target.value]);
-  //   };
-  // }
+  
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async(e) => {
+
     const file = e.target.files[0];
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -115,7 +88,39 @@ const TeacherProfile = () => {
         }));
       };
       reader.readAsDataURL(file);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      };
+
+      const formData = new FormData();
+      formData.append("profile", file);
+
+
+      try {
+        const response = await axios.put(`/api/teacher/update`, formData , config);
+
+        console.log("response =>", response);
+
+        console.log("response.data =>", response.data);
+
+        message.success("Profile picture updated successfully");
+
+        fetchProfile();
+      } 
+      catch (error) {
+        message.error(error.message);  
+      }
+
     }
+
+    else {
+      message.error("Please select a file to upload");
+    }
+
   };
 
   useEffect(() => {
@@ -131,7 +136,7 @@ const TeacherProfile = () => {
             <div className="profile-header">
               <div className="avatar-container">
                 <Avatar
-                  src={profile.profilePicture}
+                  src={profile.teacherProfile}
                   alt="Profile"
                   className="avatar"
                   onClick={() => document.getElementById("avatarInput").click()}

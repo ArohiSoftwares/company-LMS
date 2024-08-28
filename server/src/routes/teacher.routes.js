@@ -14,7 +14,11 @@ import isTeacherLogin from '../middlewares/teacher.auth.js';
 
 const teacherRouter = express.Router();
 
-teacherRouter.route('/update').put(isTeacherLogin, upload.none(), teacherUpdate);
+teacherRouter.route('/update').put(
+    isTeacherLogin, 
+    upload.single('profile'),
+    teacherUpdate
+);
 
 teacherRouter.route('/getMyCourses').get(isTeacherLogin, getTeacherCourses);
 

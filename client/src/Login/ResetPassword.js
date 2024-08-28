@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Lock } from "lucide-react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { message } from "react-message-popup";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -12,19 +13,39 @@ const ResetPassword = () => {
   const {token} = useParams();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       setError("Passwords don't match");
-    } else if (password.length < 4) {
-      await axios.post(`/api/type/resetpassword`, {
+      return;
+    } 
+    if (password.length < 4) {
+      setError("Password must be at least 4 characters long");
+      return;
+    } 
+ 
+    try {
+
+      setError("");
+      // Here you would typically call an API to handle the password reset
+
+      const response = await axios.post(`/api/type/resetpassword`, {
         confirmPassword,
         token,
       });
-      setError("Password must be at least 4 characters long");
-    } else {
-      setError("");
-      // Here you would typically call an API to handle the password reset
-      console.log("Password reset submitted");
+
+      console.log("response => "+response);
+
+      
+      if(response.data.success === true) {
+        
+        message.success("Password reset submitted successfully");
+      }
+
+    } 
+    catch (error) {
+      message.error(error.message);  
     }
+
   };
 
   return (
