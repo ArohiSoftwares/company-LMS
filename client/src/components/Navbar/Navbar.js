@@ -47,11 +47,21 @@ function Navbar() {
   const logouthandler = async () => {
 
     try {
+
+      if(teacher) {
+        const response = await axios.post('/api/teacher/logout')
+      }
+
+      else {
+        const response = await axios.post('/api/student/logout')
+      }
       const response = await axios.post('/api/student/logout')
   
       console.log(response.data);
 
       dispatch(logout());
+
+
     } 
 
     catch (error) {
