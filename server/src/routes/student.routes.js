@@ -1,6 +1,6 @@
 import express from 'express';
 import { upload } from '../middlewares/multer.middleware.js';
-import { getLecturesByCourse, getMyCourses, getStudentProfile, studentDelete, studentLogin, studentLogout, studentRegister, studentUpdate } from '../controller/version1/student.controller.js';
+import { getLectureDetails, getLecturesByCourse, getMyCourses, getStudentProfile, studentDelete, studentLogin, studentLogout, studentRegister, studentUpdate } from '../controller/version1/student.controller.js';
 import isStudentLoggedIn from '../middlewares/student.auth.js';
 
 const studentRouter = express.Router();
@@ -39,10 +39,11 @@ studentRouter.route('/getMyCourses').get(
 
 
 
-// studentRouter.route('/getLecturesByCourse/:courseCode').get(
-//     isStudentLoggedIn,
-//     getLecturesByCourse
-// )
+studentRouter.route('/getLectureDetails/:lectureCode').get(
+    isStudentLoggedIn,
+    upload.none(),
+    getLectureDetails
+)
 
 
 

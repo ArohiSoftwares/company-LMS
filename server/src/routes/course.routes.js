@@ -68,7 +68,11 @@ courseRouter.route('/showAllCourses').get(
 )
 
 
-courseRouter.route('/uploadLectures/videoUrl/').post(upload.none(), saveVideo);
+courseRouter.route('/uploadLectures/videoUrl/').post(
+    isTeacherLogin,
+    upload.none(), 
+    saveVideo
+);
 
 
 

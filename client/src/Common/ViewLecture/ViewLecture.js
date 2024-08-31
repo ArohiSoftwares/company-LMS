@@ -37,55 +37,71 @@ function ViewLecture() {
     {
       lectureName: "Lecture Name",
       lectureDescription: "Lecture Description",
-      teacherName: "Teacher Name",
-      lectureImage: "https://www.w3schools.com/w3images/avatar.png",
+      videoLink: "https://www.w3schools.com/w3images/avatar.png",
     },
   ]);
 
-  const [lectureDetails, setLectureDetails] = useState([
+  const [lectureDetails, setLectureDetails] = useState(
     {
       lectureName: "",
       lectureDescription: "",
-      lectureVideo: "",
-      lectureImage: "",
+      videoLink: "",
+
     },
-  ]);
+  );
 
   const fetchLectureList = async () => {
 
     try {
       // form-urlencoded
+
       const code = new URLSearchParams();
       code.append("courseCode", courseCode);
+
       const response = await axios.post(
-        `/api/student/getLecturesByCourse/`,
+        "/api/student/getLecturesByCourse/",
         code
       );
-      response.data.data?.map((data) => {
-        setLectureDetails([
-          ...lectureDetails,
-          {
-            lectureName: data.video[0].lectureName,
-            lectureDescription: data.video[0].lectureDescription,
-            lectureVideo: data.video[0].private_url,
-          },
-        ]);
-      });
+
+      console.log("response => ", response);
+
+      console.log("response.data.data => ", response.data.data);
+
+
+      setLectureList(response.data.data);
+
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
   const fetchLectureDetails = async (lectureCode) => {
     try {
+
+      console.log("lectureCode => ", lectureCode);
+
+      const body = {
+        lectureCode: lectureCode,
+      }
+
       const response = await axios.get(
-        `/api/student/getLectureDetails/${lectureCode}`
+        `/api/student/getLectureDetails/:${lectureCode}`,
+
       );
-      console.log(response);
-    } catch (error) {
+      
+
+      console.log("response => ", response);
+
+      console.log("response.data.data => ", response.data.data);
+
+
+      setLectureDetails(response.data.data);
+
+      playVideo(response.data.data, response.data.data?.videoLink);
+      
+    } 
+    catch (error) {
       console.log(error);
     }
   };
@@ -94,36 +110,20 @@ function ViewLecture() {
     fetchLectureList();
   }, []);
 
-
   return (
-    <div className="flex  flex-col md:flex-row md:h-[60rem] w-full">
-
-      <nav
-        className="text-center items-center w-full h-16 bg-gray-600 px-4 py-2 text-white"
-      > 
-        <p className="text-center m-auto"> View Your Course Lectures Here </p>
-
-      </nav>
-
+    <div className="flex  flex-col md:flex-row md:h-[60rem]">
 
       {activeVideo && (
         <div className="w-full md:w-3/4 flex flex-col items-center bg-gray-900 p-5">
-
           <div className="w-full md:h-96">
             <ReactPlayer
-              ref={(player) => {
-                activeVideo.ref = player;
-              }}
-              lectureImage={activeVideo.lectureImage}
+              url={activeVideo}
               playing={playing}
               controls
-              width="100%"
-              height="5rem"
               className="rounded"
+              
             />
           </div>
-
-          
 
           <div className="mt-5 flex space-x-4">
             <button
@@ -193,35 +193,27 @@ function ViewLecture() {
         </div>
       )}
 
-
-
-      <ul className="space-y-5 py-5 mx-auto md:w-1/4 w-full bg-gray-700 max-w-screen-md">
-        
-        <h2 className="text-center text-gray-300 text-xl"> Lectures List </h2>
-
-        {lectureDetails.map((data, i) => (
-
+      <ul className="space-y-5 py-5 mx-auto md:w-1/4 w-full max-w-screen-md">
+        {lectureList.map((data, i) => (
           <button
             key={i}
-            onClick={() => playVideo(data, data.lectureVideo)}
-            className="flex flex-col w-full md:flex-row items-center shadow-lg gap-5 md:gap-10 px-5 md:px-10 bg-gray-800 rounded-lg hover:bg-slate-400"
-            // onClick={() => fetchLectureDetails()}
+            className="flex flex-col md:flex-row items-center shadow-lg gap-5 md:gap-10 px-5 md:px-10 bg-gray-800 rounded-lg hover:bg-slate-400"
+            onClick={() => fetchLectureDetails(data?._id)}
           >
             <div className="text-center md:text-left">
               <h3 className="text-xl md:text-2xl font-medium mb-2 text-white">
-                {data.lectureName || "Lecture Name"}
+                {data.lectureName}
               </h3>
-              {/* <h5 className="text-gray-100 mb-2 text-lg md:text-xl">
-                {data.lectureDescription || "Lecture Description"}
-              </h5> */}
-              <p className="text-gray-500">{data.channel || "Channel"}</p>
+              <h5 className="text-gray-100 mb-2 text-lg md:text-xl">
+                {data.lectureDescription}
+              </h5>
+              <p className="text-gray-500">{data.channel}</p>
             </div>
           </button>
         ))}
       </ul>
     </div>
   );
-  
 }
 
 export default ViewLecture;

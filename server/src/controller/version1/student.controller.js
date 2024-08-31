@@ -206,16 +206,51 @@ const getMyCourses = asyncHandler(async (req, res, next) => {
 });
 
 const getLecturesByCourse = asyncHandler(async (req, res, next) => {
+
     const { courseCode } = req.body;
     console.log(req.body);
     try {
-        const lectures = await Course.find({ courseCode });
+        const lectures = await Lecture.find({ courseCode });
 
-        return res.status(200).json(new ApiResponse(200, 'Lectures fetched successfully', lectures));
-    } catch (error) {
+        return res
+        .status(200)
+        .json(new ApiResponse(200, 'Lectures fetched successfully', lectures));
+    } 
+    catch (error) {
         return res.status(400).json(new ApiError(400, error.message));
     }
 });
+
+
+const getLectureDetails = asyncHandler(async (req, res, next) => {
+
+    const { lectureCode } = req.body || req.params || req.query;
+  
+    console.log('req.body => ', req.body);
+    console.log('req.params => ', req.params);
+    console.log('req.query => ', req.query);
+
+    if (!lectureCode) {
+        throw new ApiError(400, 'Missing lecture code');
+    }
+
+    try {
+        
+        const lecture = await Lecture.findById( lectureCode );
+
+        console.log('lecture => ', lecture);
+
+        return res
+        .status(200)
+        .json(new ApiResponse(200, 'Lecture details fetched successfully', lecture));
+    } 
+    catch (error) {
+        return res
+        .status(400)
+        .json(new ApiError(400, error.message));
+    }
+});
+
 
 export {
     studentRegister,
@@ -227,5 +262,6 @@ export {
 
     /// course lectures
     getLecturesByCourse,
-    getMyCourses
+    getMyCourses,
+    getLectureDetails
 };

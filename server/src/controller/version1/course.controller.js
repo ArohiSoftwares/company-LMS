@@ -20,7 +20,12 @@ import { Teacher } from '../../models/teacher.model.js';
 dontenv.config();
 
 
-const awsBucket = "lmsbucket12"
+// const awsBucket = "lmsbucket12"
+
+
+const awsBucket = 'videostreaming31'
+
+
 
 
 const client = new S3Client({
@@ -362,11 +367,8 @@ const uploadLectures = asyncHandler(async (req, res) => {
 
 
 const sendSignedUrl = async (req, res) => {
-    
     const { courseCode } = req.query;
-
     const filename = `video-${courseCode}-${Date.now()}.mp4`;
-    
     const ContentType = 'mp4';
 
     const command = new PutObjectCommand({
@@ -384,10 +386,14 @@ const sendSignedUrl = async (req, res) => {
 
 
 
+
+
 const saveVideo = asyncHandler(async (req, res) => {
 
     try {
         const { videourl } = req.body;
+
+        const { teacherEmail } = req.user;
     
         const { lectureName, lectureDescription, courseCode } = req.body;
     
@@ -423,7 +429,7 @@ const saveVideo = asyncHandler(async (req, res) => {
             }
         })
     
-        console.log(lecture);
+        console.log('lecture => ', lecture);
     
         await lecture.save();
     

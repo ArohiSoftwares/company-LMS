@@ -7,9 +7,11 @@ const isStudentLoggedIn = (req, res, next) => {
 
     if(!studentToken) {
 
-        return res.status(401)
-        .json(new ApiError(401, 'Student not logged in'))
+        return res
+        .status(401)
         .redirect("/login")
+        
+        
     }
 
     try {
