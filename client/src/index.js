@@ -50,6 +50,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Outlet />}>
       <Route path="/" element={<Home />} />
       <Route path="/forgot-password" element={<ForgotPassword/>}/>
+      
       <Route path="/resetpassword/:token" element={<ResetPassword/>} />
       <Route path="courses" element={<Coursespage />} />
       <Route path="overview/:courseCode" element={<Overview />} />

@@ -101,6 +101,17 @@ const forgetPassword = asyncHandler(async (req, res) => {
     console.log(email);
 
 
+    /*   comment below code for testing after testing uncomment the code below */
+
+    // const student = await Student.findOne({ studentEmail: email });
+
+    // if(!student) {
+    //     return res
+    //     .status(400)
+    //     .json(
+    //         new ApiError(400, 'Student with this email is not found')
+    //     );
+    // }
 
     
 
@@ -129,7 +140,7 @@ const forgetPassword = asyncHandler(async (req, res) => {
         // Generate a unique reset token
         const resetToken = crypto.randomBytes(20).toString('hex');
 
-        const resetLink = `http://localhost:3000/resetpassword?token=${resetToken}`;
+        const resetLink = `http://localhost:3000/resetpassword/${resetToken}`;
 
         console.log("resetLink => ", resetLink);
 
@@ -170,29 +181,62 @@ const forgetPassword = asyncHandler(async (req, res) => {
 
 });
 
+
 const resetPassword = asyncHandler(async (req, res) => {
     const { token, newPassword } = req.body;
 
-    // Verify the token
-    const getToken = await ForgetPasswordToken.find({ token: token });
-    if (getToken) {
-        const email = getToken.email;
+    console.log("req.body => ", req.body);
 
+    if(!token && !newPassword) {
+        return res
+        .status(400)
+        .json({ error: 'Missing required fields' });
+    }
+
+   
+    try {
+        
+        // Verify the token
+        const getToken = await ForgetPasswordToken.find({ token: token });
+    
+        if(!getToken) {
+            return res
+            .status(400)
+            .json({ error: 'Invalid or expired reset token' });
+        }
+    
+        
+        const email = getToken.email;
+    
         // Here you would update the user's password in your database
         console.log(`Updating password for ${email}`);
-        const user = Student.updateOne(
-            { email: email },
+    
+        const user = await Student.updateOne(
+    
+            { studentEmail: email },
+    
             {
                 studentPassword: newPassword
-            }
+            },
+    
+            {new : true}
         );
-
+    
         const removeTokenFromDB = ForgetPasswordToken.deleteOne({ email: email });
-
-        res.json({ message: 'Password successfully reset' });
-    } else {
-        res.status(400).json({ error: 'Invalid or expired reset token' });
+    
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, 'Password successfully reset', user)
+        )
+    } 
+    catch (error) {
+        console.log("error => ", error);
+        throw new ApiError(400, error.message);
     }
+
+
 });
 
 export { loginUser, forgetPassword, resetPassword };

@@ -11,17 +11,21 @@ const ResetPassword = () => {
 
 
   const {token} = useParams();
+
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("token => ", token);
 
     if (password !== confirmPassword) {
       setError("Passwords don't match");
       return;
     } 
-    if (password.length < 4) {
-      setError("Password must be at least 4 characters long");
-      return;
-    } 
+    
+
+    console.log("password => ", password);
  
     try {
 
@@ -39,6 +43,7 @@ const ResetPassword = () => {
       if(response.data.success === true) {
         
         message.success("Password reset submitted successfully");
+        
       }
 
     } 
