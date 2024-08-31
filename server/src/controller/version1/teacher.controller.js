@@ -13,6 +13,22 @@ const cookieOptions = {
     secure: true
 };
 
+
+
+const logoutTeacher = asyncHandler(async (req, res) => {
+    try {
+        return res
+            .status(200)
+            .clearCookie('teacherToken', cookieOptions)
+            .json(new ApiResponse(200, 'Teacher logout successfully'));
+    } 
+    catch (error) {
+        return res.status(400).json(new ApiError(400, error.message));
+    }
+});
+
+
+
 const teacherUpdate = asyncHandler(async (req, res) => {
 
     const { teacherEmail } = req.user;
@@ -185,4 +201,12 @@ const uploadPan = asyncHandler(async (req, res) => {
 });
 
 
-export { getTeacherCourses, getTeacherProfile, teacherUpdate, teacherDelete, uploadAadhar, uploadPan };
+export { 
+    getTeacherCourses, 
+    getTeacherProfile, 
+    teacherUpdate, 
+    teacherDelete, 
+    uploadAadhar, 
+    uploadPan,
+    logoutTeacher
+};

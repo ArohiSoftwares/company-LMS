@@ -13,6 +13,7 @@ const ForgotPassword = () => {
       const res = await axios.post("/api/type/forgetpassword", {
         email,
       });
+
       console.log(res.data)
       console.log("Password reset requested for:", email);
       message.success("Password reset requested for: " + email);
@@ -21,6 +22,7 @@ const ForgotPassword = () => {
       message.error(error.message);  
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

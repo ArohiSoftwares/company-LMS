@@ -22,7 +22,7 @@ function VideoSection() {
           ></iframe>
         </div>
 
-        <LearningButton/>
+        {/* <LearningButton/> */}
       </div>
 
     </div>

@@ -173,11 +173,7 @@ function Overview() {
             Welcome to Our {category.courseName}
           </h1>
 
-          {/* 
-              <p className="text-xl text-gray-300 mt-4">
-                Master Backend Development with Node.js, Express.js, and MongoDB
-              </p> 
-            */}
+        
         </div>
 
         <div className="bg-gradient-to-b from-gray-800 to-cyan-850 text-white rounded-lg shadow-lg overflow-hidden my-5 p-5 mx-5 sm:mx-10">
@@ -186,14 +182,18 @@ function Overview() {
               <p className="text-3xl sm:text-4xl font-bold">
                 {category.courseName}
               </p>
-              <p className="text-xl sm:text-2xl mt-7 font-semibold">
+
+
+              {/* <p className="text-xl sm:text-2xl mt-7 font-semibold">
                 <span className="bg-gray-700 rounded p-2 pl-4 pr-4">
                   {category.btn1}
                 </span>
                 <span className="ml-2 bg-gray-700 rounded p-2 pl-4 pr-4">
                   {category.btn2}
                 </span>
-              </p>
+              </p> */}
+
+
               <p className="text-4xl sm:text-5xl font-bold mt-14">
                 Only:{" "}
                 <span className=" text-cyan-400">
@@ -233,13 +233,13 @@ function Overview() {
           </div>
         </div>
 
-        <div className="flex flex-col mt-10 items-center">
+        {/* <div className="flex flex-col mt-10 items-center">
           <img
             src={category.courseThumbnail.private_url}
             alt={category.courseName}
             className="h-48 sm:h-72 lg:ml-20 rounded-lg mb-10"
           />
-        </div>
+        </div> */}
 
         <div className="flex justify-center flex-wrap my-20">
           <div className="relative text-center font-bold text-3xl mr-10 ml-10 p-10 rounded-3xl">

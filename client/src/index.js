@@ -80,6 +80,8 @@ const router = createBrowserRouter(
           element={<ViewLecture />}
         />
       </Route>
+
+      
       <Route element={<ProtectedTeacherRoutes />}>
         <Route path="/uploadvideo" element={<UploadVideo />} />
         <Route path={"/uploadvideo/:courseCode"} element={<UploadVideo />} />

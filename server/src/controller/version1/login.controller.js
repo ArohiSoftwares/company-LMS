@@ -6,6 +6,10 @@ import bcrypt from 'bcrypt';
 import { Student, Teacher, Admin } from '../../models/export/export.model.js';
 import { ForgetPasswordToken } from '../../models/reset.model.js';
 import crypto from 'crypto';
+
+import nodemailer from 'nodemailer';
+
+
 const cookieOptions = {
     maxAge: 1000 * 60 * 60 * 24 * 30,
     httpOnly: true
@@ -93,45 +97,61 @@ const loginUser = asyncHandler(async (req, res) => {
 const forgetPassword = asyncHandler(async (req, res) => {
 
     const { email } = req.body;
+
     console.log(email);
 
+
+
+    
+
+
     let transporter = await nodemailer.createTransport({
-        host: 'smtp.example.com',
+
+        host: 'smtp.gmail.com',
         port: 587,
         secure: false, // Use TLS
         auth: {
-            user: 'your_email@example.com',
-            pass: 'your_password'
+            user: 'guduughuge7@gmail.com',
+            pass: 'hqivpnjhzjjlredn'
         }
     });
 
+    console.log("transporter => ", transporter);
+
     if(!transporter) {
-        return res.status(500).json({ error: 'Failed to send password reset email' });
+        return res
+        .status(500)
+        .json({ error: 'Failed to send password reset email' });
     }
 
     try {
+
         // Generate a unique reset token
         const resetToken = crypto.randomBytes(20).toString('hex');
 
         const resetLink = `http://localhost:3000/resetpassword?token=${resetToken}`;
+
+        console.log("resetLink => ", resetLink);
 
         const reset = await ForgetPasswordToken.create({
             email: email,
             token: resetToken
         });
 
+        console.log("reset => ", reset);
+
         await reset.save();
 
         try {
             let info = await transporter.sendMail({
-                from: 'LMS Reset Password',
+                from: '"LMS Reset Password"  <guduughuge7@gmail.com>',
                 to: email,
                 subject: 'Password Reset Request',
                 text: `Please use the following link to reset your password: ${resetLink}`,
                 html: `<p>Please use the following link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`
             });
 
-            console.log('Password reset email sent: %s', info.messageId);
+            console.log('Password reset email sent: %s', info);
 
             return res.json({ message: 'Password reset link sent to your email' });
 

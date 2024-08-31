@@ -63,11 +63,14 @@ function MyCourses() {
         <h1 className="text-white text-center text-3xl font-semibold my-12">
           My Courses
         </h1>
-        <div className="flex flex-wrap gap-8">
+
+
+        <div className="flex flex-wrap gap-4">
+
           {courses.map((course) => (
             <div
               key={course._id}
-              className="bg-black text-white rounded-lg shadow-lg w-[40%] overflow-hidden"
+              className="bg-black text-white rounded-lg shadow-lg w-[25rem] overflow-hidden"
             >
               <img
                 src={course.courseThumbnail.private_url}
@@ -82,12 +85,7 @@ function MyCourses() {
                 </h2>
                 <p className="text-gray-400 mb-5">{course.courseDescription}</p>
                 <hr />
-               {/* <div className="text-cyan-400 mt-7 font-semibold text-xl ">
-                    
-                  {course.courseTeacher.map((teacher, index) => (
-                    <div key={index}>{teacher}</div>
-                  ))}
-                </div>*/}
+              
                 <div className="mt-7 flex justify-between mb-2 text-gray-300 text-xl font-bold">
                   <div>By {course.adminEmail}</div>
                   <div>Price: ₹{course.coursePrice}</div>
@@ -103,6 +101,8 @@ function MyCourses() {
             </div>
           ))}
         </div>
+
+
       </div>
     </>
   );

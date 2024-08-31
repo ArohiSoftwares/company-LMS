@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 const initialVideos = [];
 
 const UploadVideo = () => {
+
   const [videos, setVideos] = useState(initialVideos);
   const [showForm, setShowForm] = useState(false);
   const [signedUrl, seteSignedUrl] = useState(null);
@@ -35,43 +36,39 @@ const UploadVideo = () => {
     setNewVideo({ ...newVideo, [name]: value });
   };
 
+
   const handleFile = (e) => {
     setfile(e.target.files[0]);
   };
+
   const handleVideoUpload = async (e) => {
+
+    e.preventDefault();
+
     if (!file) return;
 
-    // const videoUrl = URL.createObjectURL(file);
-    // const video = document.createElement("video");
 
-    // video.preload = "metadata";
-    // video.onloadedmetadata = () => {
-    //   window.URL.revokeObjectURL(videoUrl);
-    //   const duration = Math.floor(video.duration);
-    //   const minutes = Math.floor(duration / 60);
-    //   const seconds = duration % 60;
-    //   setNewVideo({
-    //     ...newVideo,
-    //     video: videoUrl,
-    //     duration: `${minutes}m ${seconds}s`,
-    //   });
-    // };
-    // video.src = videoUrl;
     const response = await axios.post(
       `/api/course/uploadLectures?courseCode=${courseCode}`
     );
+
     seteSignedUrl(response.data.signedurl);
     console.log("response 1=>", response);
 
     const formData = new FormData();
     formData.append("file", file);
+
+    /// upload video on s3 and give response and upload a video on our server
+
     const resposne2 = await axios.put(response.data.signedurl, file, {
+
       headers: {
         "Access-Control-Allow-Origin":
           "videostreaming31.s3.eu-north-1.amazonaws.com",
         "Access-Control-Allow-Credentials": true,
         "Content-Type": "video/mp4",
       },
+
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
@@ -80,10 +77,22 @@ const UploadVideo = () => {
         setUploading(true);
         setUploadProgress(percentCompleted);
       },
+
     });
+
+
     const videoUrl = response.data.signedurl.split("/")[5].split("?")[0];
 
     if (resposne2.status === 200) {
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      };
+     
+
       const videoForm = new FormData();
       videoForm.append("videourl", videoUrl);
       videoForm.append("lectureName", newVideo.lectureName);
@@ -91,59 +100,23 @@ const UploadVideo = () => {
       videoForm.append("courseCode", courseCode);
       const response3 = await axios.post(
         `/api/course/uploadLectures/videoUrl`,
-        videoForm
+        videoForm,
+        config
       );
+
+
       console.log("response 3=>", response3);
+
     }
 
     setUploading(false);
 
     console.log("response 2=>", resposne2);
+
   };
 
-  // video.src = videoUrl;
-  // }
+  
 
-  // Usage example
-  // uploadVideo(videoFile, courseCode, newVideo, setNewVideo, seteSignedUrl);
-
-  // const uploadLecture = async (e) => {
-  //   e.preventDefault();
-
-  //   const body = {
-  //     video: newVideo.video,
-  //     lectureName: newVideo.lectureName,
-  //     lectureDescription: newVideo.lectureDescription,
-
-  //     lectureImage: newVideo.lectureImage,
-  //     attachments: newVideo.attachments,
-  //   };
-
-  //   const config = {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //     withCredentials: true,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(
-  //       `/api/course/uploadLectures?courseCode=${courseCode}`
-  //     );
-  //     seteSignedUrl(response.data.signedurl);
-  //     console.log("response 1=>", response);
-  //   } catch (error) {
-  //     console.error("Error uploading lecture:", error);
-  //   }
-  // };
-
-  const filterVideosByDuration = (duration) => {
-    setFilterDuration(duration);
-  };
-
-  const filterVideosByCategory = (category) => {
-    setFilterCategory(category);
-  };
 
   const filteredVideos = videos.filter((video) => {
     const videoDuration = parseInt(video.duration.split("m")[0]);
@@ -183,6 +156,8 @@ const UploadVideo = () => {
     };
   };
 
+
+
   return (
 
     <div>
@@ -192,8 +167,6 @@ const UploadVideo = () => {
     
 
         <div className="controls-container">
-
-
 
 
           <div className="upload-btn-container">

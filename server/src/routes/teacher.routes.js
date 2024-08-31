@@ -4,6 +4,7 @@ import { upload } from '../middlewares/multer.middleware.js';
 import {
     getTeacherCourses,
     getTeacherProfile,
+    logoutTeacher,
     teacherDelete,
     teacherUpdate,
     uploadAadhar,
@@ -18,6 +19,11 @@ teacherRouter.route('/update').put(
     isTeacherLogin, 
     upload.single('profile'),
     teacherUpdate
+);
+
+
+teacherRouter.route('/logout').post(
+    logoutTeacher
 );
 
 teacherRouter.route('/getMyCourses').get(isTeacherLogin, getTeacherCourses);

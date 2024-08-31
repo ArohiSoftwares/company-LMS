@@ -50,14 +50,15 @@ function Navbar() {
 
       if(teacher) {
         const response = await axios.post('/api/teacher/logout')
+
       }
 
       else {
         const response = await axios.post('/api/student/logout')
+
+
       }
-      const response = await axios.post('/api/student/logout')
-  
-      console.log(response.data);
+   
 
       dispatch(logout());
 
@@ -153,7 +154,7 @@ function Navbar() {
                 
                 <div className="flex items-center mr-48">
                   
-                  <span> <img src="./arohiLogo.png" alt="arohiLogo" className="h-12 w-12 rounded-full" /> </span>
+                  <span> <img src="https://res.cloudinary.com/dsh5742fk/image/upload/v1725079904/qmb25ixvtaliw6sfjia3.png" alt="arohiLogo" className="h-12 w-12 rounded-full" /> </span>
                   <span className="text-4xl ml-4 font-bold text-white">AROHI SOFTWARES</span>
                   
                 </div>
