@@ -59,13 +59,13 @@ function MyCourses() {
   return (
     <>
       <Navbar />
-      <div className="max-w-[1200px] mx-auto ">
+      <div className="max-w-full mx-auto ">
         <h1 className="text-white text-center text-3xl font-semibold my-12">
           My Courses
         </h1>
 
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex justify-around flex-wrap">
 
           {courses.map((course) => (
             <div

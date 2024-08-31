@@ -362,6 +362,7 @@ const uploadLectures = asyncHandler(async (req, res) => {
 
 
 const sendSignedUrl = async (req, res) => {
+    
     const { courseCode } = req.query;
 
     const filename = `video-${courseCode}-${Date.now()}.mp4`;
@@ -435,6 +436,9 @@ const saveVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, error.message);
     }
 });
+
+
+
 
 
 

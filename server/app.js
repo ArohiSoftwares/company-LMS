@@ -4,7 +4,8 @@ import morgan from 'morgan';
 import allRouter from './router/router.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
-import ApiResponse from './src/utils/apiResponse.js';
+
+import { getCloudinaryKeys } from './src/controller/version1/video.controller.js';
 
 
 const app = express();  /// create express app
@@ -43,6 +44,8 @@ app.get('/api/getkey', (req, res) => {
         {key : process.env.RAZORPAY_KEY_ID}
     );
 })
+
+app.get('/api/cloudinary/getKeys', getCloudinaryKeys);
  
 
 

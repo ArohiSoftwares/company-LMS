@@ -8,7 +8,7 @@ import fs from 'fs';
 // });
 
 
-cloudinary.config({
+export const cloudinaryKeys = cloudinary.config({
     cloud_name: 'dsh5742fk',
     api_key: '899594559273632',
     api_secret: '9E2v2LfZFqO2qiFf1-yuZmO3JX8'

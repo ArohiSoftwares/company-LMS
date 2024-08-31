@@ -193,7 +193,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         .json({ error: 'Missing required fields' });
     }
 
-   
+
     try {
         
         // Verify the token
