@@ -184,169 +184,146 @@ const UploadVideo = () => {
   };
 
   return (
-    <div className="upload-video-container">
+
+    <div>
       <Navbar />
+      
+      <div className="upload-video-container">
+    
 
-      <div className="controls-container">
-        {/* <div className="filters-container"> */}
-        {/* <div className="filter-sort-group">
-            <label htmlFor="filter">Filter By:</label>
-            <select
-              className="select-box"
-              onChange={(e) => filterVideosByDuration(e.target.value)}
-              value={filterDuration}
-            >
-              <option value="">Select Duration</option>
-              <option value="5">Less than 5 min</option>
-              <option value="10">Less than 10 min</option>
-              <option value="20">Less than 20 min</option>
-              <option value="30">Less than 30 min</option>
-              <option value="40">Less than 40 min</option>
-              <option value="50">Less than 50 min</option>
-              <option value="60">Less than 60 min</option>
-              <option value="61">Greater than 60 min</option>
-            </select>
+        <div className="controls-container">
+
+
+
+
+          <div className="upload-btn-container">
+            <button onClick={() => setShowForm(true)} className="upload-btn">
+              Upload Video
+            </button>
           </div>
-          <div className="filter-sort-group">
-            <label htmlFor="sort">Sort By:</label>
-            <select
-              className="select-box"
-              onChange={(e) => filterVideosByCategory(e.target.value)}
-              value={filterCategory}
-            >
-              <option value="">Select Category</option>
-              <option value="Web Development">Web Development</option>
-              <option value="AI">AI</option>
-              <option value="ML">ML</option>
-            </select>
-          </div>
-        </div> */}
-        <div className="upload-btn-container">
-          <button onClick={() => setShowForm(true)} className="upload-btn">
-            Upload Video
-          </button>
         </div>
-      </div>
 
-      {showForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close-btn" onClick={() => setShowForm(false)}>
-              &times;
-            </span>
-            <form className="upload-form" onSubmit={(e) => e.preventDefault()}>
-              <h2>Upload Video</h2>
-              <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-                <div className="mb-4">
-                  <label
-                    htmlFor="file-upload"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Choose a file
-                  </label>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    onChange={handleFile}
-                    className="block w-full text-sm text-gray-500
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-blue-50 file:text-blue-700
-            hover:file:bg-blue-100"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="text-gray-800">Lecture Name *</label>
-                  <input
-                    type="text"
-                    name="lectureName"
-                    value={newVideo.lectureName}
-                    onChange={handleInputChange}
-                    placeholder="Lecture Name"
-                    required
-                  />
-                </div>
-                <div className="form-group my-4">
-                  <label className="text-gray-800">Lecture Description *</label>
-                  <textarea
-                    name="lectureDescription"
-                    value={newVideo.lectureDescription}
-                    onChange={handleInputChange}
-                    placeholder="Lecture Description"
-                    required
-                    className="p-1 text-black"
-                  ></textarea>
-                </div>
-                <button
-                  onClick={handleVideoUpload}
-                  disabled={!file || uploading}
-                  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-                >
-                  {uploading ? "Uploading..." : "Upload"}
-                </button>
-                {uploading && (
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-blue-700">
-                        Uploading...
-                      </span>
-                      <span className="text-sm font-medium text-blue-700">
-                        {uploadProgress}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div
-                        className="bg-blue-600 h-2.5 rounded-full"
-                        style={{ width: `${uploadProgress}%` }}
-                      ></div>
-                    </div>
+        {showForm && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close-btn" onClick={() => setShowForm(false)}>
+                &times;
+              </span>
+              <form className="upload-form" onSubmit={(e) => e.preventDefault()}>
+                <h2>Upload Video</h2>
+                <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
+                  <div className="mb-4">
+                    <label
+                      htmlFor="file-upload"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Choose a file
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      onChange={handleFile}
+                      className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
+                    />
                   </div>
-                )}
-              </div>
-
-              {/****
-              <div className="form-row">
-
-                <div className="form-group">
-                  <label>Lecture Image *</label>
-                  <input type="file" name="lectureImage" onChange={handleInputChange} accept="image/*" />
+                  <div className="form-group">
+                    <label className="text-gray-800">Lecture Name *</label>
+                    <input
+                      type="text"
+                      name="lectureName"
+                      value={newVideo.lectureName}
+                      onChange={handleInputChange}
+                      placeholder="Lecture Name"
+                      required
+                    />
+                  </div>
+                  <div className="form-group my-4">
+                    <label className="text-gray-800">Lecture Description *</label>
+                    <textarea
+                      name="lectureDescription"
+                      value={newVideo.lectureDescription}
+                      onChange={handleInputChange}
+                      placeholder="Lecture Description"
+                      required
+                      className="p-1 text-black"
+                    ></textarea>
+                  </div>
+                  <button
+                    onClick={handleVideoUpload}
+                    disabled={!file || uploading}
+                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+                  >
+                    {uploading ? "Uploading..." : "Upload"}
+                  </button>
+                  {uploading && (
+                    <div className="mt-4">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-blue-700">
+                          Uploading...
+                        </span>
+                        <span className="text-sm font-medium text-blue-700">
+                          {uploadProgress}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div
+                          className="bg-blue-600 h-2.5 rounded-full"
+                          style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
+                {/****
+                <div className="form-row">
 
-                <div className="form-group">
-                  <label>Attachments *</label>
-                  <input type="file" name="attachments" onChange={handleInputChange} accept=".pdf,.doc,.ppt,.zip" />
+                  <div className="form-group">
+                    <label>Lecture Image *</label>
+                    <input type="file" name="lectureImage" onChange={handleInputChange} accept="image/*" />
+                  </div>
+
+
+                  <div className="form-group">
+                    <label>Attachments *</label>
+                    <input type="file" name="attachments" onChange={handleInputChange} accept=".pdf,.doc,.ppt,.zip" />
+                  </div>
+
                 </div>
 
-              </div>
-
- */}
-            </form>
+  */}
+              </form>
+            </div>
           </div>
+        )}
+
+        <div className="video-list-container">
+          {filteredVideos.map((video) => (
+            <div
+              key={video.id}
+              className="video-item"
+              onClick={() => handleVideoClick(video)}
+            >
+              <h3>{video.title}</h3>
+              <p>Instructor: {video.instructor}</p>
+              <p>Tags: {video.tags}</p>
+              <p>Category: {video.category}</p>
+              <p>Duration: {video.duration}</p>
+              <p>Lecture Name: {video.lectureName}</p>
+              <p>Course Code: {video.courseCode}</p>
+              <p>Lecture Description: {video.lectureDescription}</p>
+              <p>Rating: {video.rating}</p>
+              <p>Teacher Mail: {video.teacherMail}</p>
+            </div>
+          ))}
         </div>
-      )}
-
-      <div className="video-list-container">
-        {filteredVideos.map((video) => (
-          <div
-            key={video.id}
-            className="video-item"
-            onClick={() => handleVideoClick(video)}
-          >
-            <h3>{video.title}</h3>
-            <p>Instructor: {video.instructor}</p>
-            <p>Tags: {video.tags}</p>
-            <p>Category: {video.category}</p>
-            <p>Duration: {video.duration}</p>
-            <p>Lecture Name: {video.lectureName}</p>
-            <p>Course Code: {video.courseCode}</p>
-            <p>Lecture Description: {video.lectureDescription}</p>
-            <p>Rating: {video.rating}</p>
-            <p>Teacher Mail: {video.teacherMail}</p>
-          </div>
-        ))}
       </div>
+
     </div>
   );
 };
