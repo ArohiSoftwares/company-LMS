@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import { Lecture } from '../../models/lecture.model.js';
 import { Course } from '../../models/course.model.js';
 import { Enrollment } from '../../models/enrollment.model.js';
+import mongoose from 'mongoose';
 
 const cookieOptions = {
     httpOnly: true,
@@ -224,19 +225,29 @@ const getLecturesByCourse = asyncHandler(async (req, res, next) => {
 
 const getLectureDetails = asyncHandler(async (req, res, next) => {
 
-    const { lectureCode } = req.body || req.params || req.query;
-  
-    console.log('req.body => ', req.body);
-    console.log('req.params => ', req.params);
-    console.log('req.query => ', req.query);
-
-    if (!lectureCode) {
-        throw new ApiError(400, 'Missing lecture code');
-    }
-
     try {
+
+        const { lectureCode } = req.body || req.params || req.query;
+    
+        console.log('req.body => ', req.body);
+        console.log('req.params => ', req.params);
+        console.log('req.query => ', req.query);
+
+        // if (!lectureCode) {
+        //     throw new ApiError(400, 'Missing lecture code');
+        // }
+
+        const _id = new mongoose.Types.ObjectId(lectureCode);
+
+        console.log('_id => ', _id);
+
+    
         
-        const lecture = await Lecture.findById( lectureCode );
+        const lecture = await Lecture.findById(_id);
+
+        if(!lecture) {
+            throw new ApiError(400, 'Lecture not found');
+        }
 
         console.log('lecture => ', lecture);
 

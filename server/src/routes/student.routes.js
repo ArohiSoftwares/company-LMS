@@ -39,7 +39,7 @@ studentRouter.route('/getMyCourses').get(
 
 
 
-studentRouter.route('/getLectureDetails/:lectureCode').get(
+studentRouter.route('/getLectureDetails').post(
     isStudentLoggedIn,
     upload.none(),
     getLectureDetails
