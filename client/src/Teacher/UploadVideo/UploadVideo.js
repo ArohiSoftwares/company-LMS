@@ -101,9 +101,6 @@ const UploadVideo = () => {
     console.log("response 2=>", resposne2);
   };
 
-  
-  
-
   const filteredVideos = videos.filter((video) => {
     const videoDuration = parseInt(video.duration.split("m")[0]);
     const durationMatch =
@@ -147,39 +144,6 @@ const UploadVideo = () => {
       <Navbar />
 
       <div className="controls-container">
-        {/* <div className="filters-container"> */}
-        {/* <div className="filter-sort-group">
-            <label htmlFor="filter">Filter By:</label>
-            <select
-              className="select-box"
-              onChange={(e) => filterVideosByDuration(e.target.value)}
-              value={filterDuration}
-            >
-              <option value="">Select Duration</option>
-              <option value="5">Less than 5 min</option>
-              <option value="10">Less than 10 min</option>
-              <option value="20">Less than 20 min</option>
-              <option value="30">Less than 30 min</option>
-              <option value="40">Less than 40 min</option>
-              <option value="50">Less than 50 min</option>
-              <option value="60">Less than 60 min</option>
-              <option value="61">Greater than 60 min</option>
-            </select>
-          </div>
-          <div className="filter-sort-group">
-            <label htmlFor="sort">Sort By:</label>
-            <select
-              className="select-box"
-              onChange={(e) => filterVideosByCategory(e.target.value)}
-              value={filterCategory}
-            >
-              <option value="">Select Category</option>
-              <option value="Web Development">Web Development</option>
-              <option value="AI">AI</option>
-              <option value="ML">ML</option>
-            </select>
-          </div>
-        </div> */}
         <div className="upload-btn-container">
           <button onClick={() => setShowForm(true)} className="upload-btn">
             Upload Video
