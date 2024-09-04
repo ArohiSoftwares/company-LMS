@@ -249,6 +249,40 @@ const getCourses = async (req, res) => {
     }
 };
 
+const addTeacher = asyncHandler(async (req, res) => {
+    const { adminEmail } = req.user;
+    const {
+        teacherFullName,
+        teacherUserName,
+        teacherAge,
+        teacherGender,
+        teacherEmail,
+        teacherPassword,
+        teacherPhoneNumber
+    } = req.body;
+
+
+    if(!teacherFullName || !teacherUserName || !teacherAge || !teacherGender || !teacherEmail || !teacherPassword || !teacherPhoneNumber){
+        return res.status(400).json(new ApiError(400, 'Please fill all the fields'));
+    }
+    
+    try {
+        const teacher = await Teacher.create({
+            teacherFullName,
+            teacherUserName,
+            teacherAge,
+            teacherGender,
+            teacherEmail,
+            teacherPassword,
+            teacherPhoneNumber,
+            adminEmail
+        });
+
+        return res.status(200).json(new ApiResponse(200, 'Teacher added successfully', teacher));
+    } catch (error) {
+        console.log('error => ', error);
+    }
+});
 export {
     createAdmin, /// create admin
     createTeacher, //// create teacher
@@ -257,5 +291,6 @@ export {
     getTeachers,
     showAllCourses,
     getTotalStudentsEnrolled,
-    getCourses
+    getCourses,
+    addTeacher
 };

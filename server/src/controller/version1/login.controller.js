@@ -239,4 +239,8 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 });
 
+// ADD TEACHER
+
+
+ 
 export { loginUser, forgetPassword, resetPassword };
