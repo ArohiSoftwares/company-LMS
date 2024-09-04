@@ -10,4 +10,5 @@ loginRouter.route('/forgetpassword').post(upload.none(), forgetPassword);
 
 loginRouter.route('/resetpassword').post(upload.none(), resetPassword);
 
+
 export default loginRouter;

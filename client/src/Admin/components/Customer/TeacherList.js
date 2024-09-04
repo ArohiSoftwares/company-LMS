@@ -168,15 +168,13 @@ const TeacherList = () => {
         </button>
 
 
-        <input type="text" placeholder="studentEmail" />
-        <input type="text" placeholder="studentPassword" />
+    
 
 
 
 
 
-
-        {/* <TeacherRegistrationForm /> */}
+        <TeacherRegistrationForm dialogRef={dialogRef}/>
       </dialog>
 
       <dialog
@@ -195,190 +193,168 @@ const TeacherList = () => {
   );
 };
 
-// const TeacherRegistrationForm = () => {
-//   const [formData, setFormData] = useState({
-//     teacherFullName: '',
-//     teacherUserName: '',
-//     adminEmail: '',
-//     teacherAge: '',
-//     teacherGender: '',
-//     teacherType: 'teacher',
-//     teacherCourseCode: '',
-//     teacherEmail: '',
-//     teacherPassword: '',
-//     teacherPhoneNumber: '',
-//     teacherSubjects: [],
-//   });
+const TeacherRegistrationForm = ({dialogRef}) => {
+  const [formData, setFormData] = useState({
+    teacherFullName: '',
+    teacherUserName: '',
+    teacherAge: '',
+    teacherGender: '',
+    teacherType: 'teacher',
+    teacherEmail: '',
+    teacherPassword: '',
+    teacherPhoneNumber: '',
 
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData(prevData => ({
-//       ...prevData,
-//       [name]: value
-//     }));
-//   };
+  });
 
-//   const handleSubjectsChange = (e) => {
-//     const subjects = e.target.value.split(',').map(subject => subject.trim());
-//     setFormData(prevData => ({
-//       ...prevData,
-//       teacherSubjects: subjects
-//     }));
-//   };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log('Form submitted:', formData);
-//     // Here you would typically send the data to your backend
-//   };
+  const handleSubjectsChange = (e) => {
+    const subjects = e.target.value.split(',').map(subject => subject.trim());
+    setFormData(prevData => ({
+      ...prevData,
+      teacherSubjects: subjects
+    }));
+  };
 
-//   return (
-//     <div className="max-w-2xl  mx-auto p-6">
-//       <h2 className="text-2xl font-bold text-center mb-2">Teacher Registration</h2>
-//       <p className="text-gray-600 text-center mb-6">Please fill out the form below to register a teacher.</p>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(formData.teacherFullName === '' || formData.teacherUserName === '' || formData.teacherAge === '' || formData.teacherGender === '' || formData.teacherEmail === '' || formData.teacherPassword === '' || formData.teacherPhoneNumber === ''){
+      alert('Please fill all the fields');
+      return;
+    }
+    // console.log('Form submitted:', formData);
+    const res = await axios.post('/api/admin/addTeacher', formData)
 
-//       <form onSubmit={handleSubmit} className="space-y-4">
-//         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//           <div>
-//             <label htmlFor="teacherFullName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-//             <input
-//               type="text"
-//               id="teacherFullName"
-//               name="teacherFullName"
-//               value={formData.teacherFullName}
-//               onChange={handleInputChange}
-//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor="teacherUserName" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-//             <input
-//               type="text"
-//               id="teacherUserName"
-//               name="teacherUserName"
-//               value={formData.teacherUserName}
-//               onChange={handleInputChange}
-//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               required
-//             />
-//           </div>
-//         </div>
+    if(res.status === 200){
+      alert('Teacher added successfully');
+      dialogRef.current.close();
+      window.location.reload();
+    }
+    // Here you would typically send the data to your backend
+  };
 
-//         <div>
-//           <label htmlFor="adminEmail" className="block text-sm font-medium text-gray-700 mb-1">Admin Email</label>
-//           <input
-//             type="email"
-//             id="adminEmail"
-//             name="adminEmail"
-//             value={formData.adminEmail}
-//             onChange={handleInputChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//           />
-//         </div>
+  return (
+    <div className="max-w-2xl  mx-auto p-6">
+      <h2 className="text-2xl font-bold text-center mb-2">Teacher Registration</h2>
+      <p className="text-gray-600 text-center mb-6">Please fill out the form below to register a teacher.</p>
 
-//         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//           <div>
-//             <label htmlFor="teacherAge" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-//             <input
-//               type="number"
-//               id="teacherAge"
-//               name="teacherAge"
-//               value={formData.teacherAge}
-//               onChange={handleInputChange}
-//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor="teacherGender" className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-//             <select
-//               id="teacherGender"
-//               name="teacherGender"
-//               value={formData.teacherGender}
-//               onChange={handleInputChange}
-//               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               required
-//             >
-//               <option value="">Select gender</option>
-//               <option value="male">Male</option>
-//               <option value="female">Female</option>
-//               <option value="other">Other</option>
-//             </select>
-//           </div>
-//         </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="teacherFullName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input
+              type="text"
+              id="teacherFullName"
+              name="teacherFullName"
+              value={formData.teacherFullName}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="teacherUserName" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <input
+              type="text"
+              id="teacherUserName"
+              name="teacherUserName"
+              value={formData.teacherUserName}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+        </div>
 
-//         <div>
-//           <label htmlFor="teacherCourseCode" className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
-//           <input
-//             type="text"
-//             id="teacherCourseCode"
-//             name="teacherCourseCode"
-//             value={formData.teacherCourseCode}
-//             onChange={handleInputChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//           />
-//         </div>
 
-//         <div>
-//           <label htmlFor="teacherEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-//           <input
-//             type="email"
-//             id="teacherEmail"
-//             name="teacherEmail"
-//             value={formData.teacherEmail}
-//             onChange={handleInputChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             required
-//           />
-//         </div>
 
-//         <div>
-//           <label htmlFor="teacherPassword" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-//           <input
-//             type="password"
-//             id="teacherPassword"
-//             name="teacherPassword"
-//             value={formData.teacherPassword}
-//             onChange={handleInputChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             required
-//           />
-//         </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="teacherAge" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+            <input
+              type="number"
+              id="teacherAge"
+              name="teacherAge"
+              value={formData.teacherAge}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="teacherGender" className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+            <select
+              id="teacherGender"
+              name="teacherGender"
+              value={formData.teacherGender}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
 
-//         <div>
-//           <label htmlFor="teacherPhoneNumber" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-//           <input
-//             type="tel"
-//             id="teacherPhoneNumber"
-//             name="teacherPhoneNumber"
-//             value={formData.teacherPhoneNumber}
-//             onChange={handleInputChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//           />
-//         </div>
 
-//         <div>
-//           <label htmlFor="teacherSubjects" className="block text-sm font-medium text-gray-700 mb-1">Subjects (comma-separated)</label>
-//           <input
-//             type="text"
-//             id="teacherSubjects"
-//             name="teacherSubjects"
-//             value={formData.teacherSubjects.join(', ')}
-//             onChange={handleSubjectsChange}
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//           />
-//         </div>
+        <div>
+          <label htmlFor="teacherEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            id="teacherEmail"
+            name="teacherEmail"
+            value={formData.teacherEmail}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
 
-//         <button
-//           type="submit"
-//           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-//         >
-//           Register
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
+        <div>
+          <label htmlFor="teacherPassword" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <input
+            type="password"
+            id="teacherPassword"
+            name="teacherPassword"
+            value={formData.teacherPassword}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="teacherPhoneNumber" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <input
+            type="tel"
+            id="teacherPhoneNumber"
+            name="teacherPhoneNumber"
+            value={formData.teacherPhoneNumber}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+       
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        >
+          Register
+        </button>
+      </form>
+    </div>
+  );
+};
 
 export default TeacherList;
