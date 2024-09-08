@@ -53,8 +53,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
         const teacher = await Teacher.findOne({ teacherEmail: studentEmail }).select('+teacherPassword');
 
+
         if (teacher) {
-            const comparePassword = await bcrypt.compare(studentPassword, teacher.teacherPassword);
+            const comparePassword = (studentPassword === teacher.teacherPassword);
 
             if (!comparePassword) {
                 return res.status(400).json(new ApiError(400, 'Email or Password is incorrect to find in Teachers'));

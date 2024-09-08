@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import TeacherDetails from "./TeacherDetails/TeacherDetails";
+import { message } from "react-message-popup";
 
 
 const inputClass =
@@ -224,19 +225,24 @@ const TeacherRegistrationForm = ({dialogRef}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(formData.teacherFullName === '' || formData.teacherUserName === '' || formData.teacherAge === '' || formData.teacherGender === '' || formData.teacherEmail === '' || formData.teacherPassword === '' || formData.teacherPhoneNumber === ''){
-      alert('Please fill all the fields');
-      return;
+    try {
+      if(formData.teacherFullName === '' || formData.teacherUserName === '' || formData.teacherAge === '' || formData.teacherGender === '' || formData.teacherEmail === '' || formData.teacherPassword === '' || formData.teacherPhoneNumber === ''){
+        alert('Please fill all the fields');
+        return;
+      }
+      // console.log('Form submitted:', formData);
+      const res = await axios.post('/api/admin/addTeacher', formData)
+  
+      if(res.status === 200){
+        alert('Teacher added successfully');
+        dialogRef.current.close();
+        window.location.reload();
+      }
+      // Here you would typically send the data to your backend
+    } 
+    catch (error) {
+      message.error(error.message);
     }
-    // console.log('Form submitted:', formData);
-    const res = await axios.post('/api/admin/addTeacher', formData)
-
-    if(res.status === 200){
-      alert('Teacher added successfully');
-      dialogRef.current.close();
-      window.location.reload();
-    }
-    // Here you would typically send the data to your backend
   };
 
   return (

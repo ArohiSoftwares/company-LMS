@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const TeacherSchema = new mongoose.Schema(
     {
@@ -113,5 +114,13 @@ TeacherSchema.methods = {
         );
     }
 };
+
+
+TeacherSchema.pre('save', function (next) {
+    if (this.isModified("teacherPassword")) {
+        this.teacherPassword = bcrypt.hash(this.teacherPassword, 10);
+    }
+    next();
+});
 
 export const Teacher = mongoose.model('Teacher', TeacherSchema);

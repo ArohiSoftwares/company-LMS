@@ -250,6 +250,7 @@ const getCourses = async (req, res) => {
 };
 
 const addTeacher = asyncHandler(async (req, res) => {
+
     const { adminEmail } = req.user;
     const {
         teacherFullName,
@@ -267,6 +268,15 @@ const addTeacher = asyncHandler(async (req, res) => {
     }
     
     try {
+
+
+        const existedTeacher = await Teacher.findOne({ teacherEmail });
+
+        if (existedTeacher) {
+            return res.status(400).json(new ApiError(400, 'Teacher already exist'));
+        }
+
+
         const teacher = await Teacher.create({
             teacherFullName,
             teacherUserName,
@@ -283,6 +293,8 @@ const addTeacher = asyncHandler(async (req, res) => {
         console.log('error => ', error);
     }
 });
+
+
 export {
     createAdmin, /// create admin
     createTeacher, //// create teacher
