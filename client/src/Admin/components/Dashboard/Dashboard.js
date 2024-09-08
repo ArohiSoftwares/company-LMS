@@ -19,6 +19,38 @@ const Dashboard = () => {
   const [totalTeachers, setTotalTeachers] = useState(0);
   const [totalCourses, setTotalCourses] = useState(0);
 
+
+  const [totalSales, setTotalSales] = useState([0]);
+
+
+  const fetchTotalSales = async () => {
+    try {
+      const response = await axios.get(`/api/admin/getTotalSale`);
+
+      console.log("get all payment response=>", response);
+      console.log("response.data =>", response.data);
+      console.log("response.data.data =>", response.data.data);
+
+      setTotalSales(response.data.data);
+    } 
+    catch (error) {
+      console.log(error);
+
+    }
+
+  };
+
+  const sale = totalSales.map(sale => sale?.totalSale / 100)
+
+
+  console.log("sale=>", sale);
+
+  let ans = 0;
+
+  sale.map(sale => ans += sale);
+
+
+
   useEffect(() => {
     //fetch data from api
     axios
@@ -30,6 +62,10 @@ const Dashboard = () => {
     axios
       .post("/api/admin/totalCourses")
       .then((res) => setTotalCourses(res.data.data.length));
+
+    fetchTotalSales()
+
+
   }, []);
   const data = [
     { date: "24-01-01", purcased: 5 },
@@ -58,7 +94,13 @@ const Dashboard = () => {
             <ResponsiveContainer>
               <span className="px-6 text-xl font-medium">Total Sales</span>
               <br />
-              <span className="px-6 text-3xl fixed">$9000</span>
+              <span className="px-6 text-3xl fixed">
+
+                {
+                  ans
+                }
+              
+              </span>  
 
               <AreaChart
                 width={400}
@@ -80,6 +122,8 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
+          {/**  
+        
           <div className="h-[200px] w-full py-6 m-6 border bg-slate-50 rounded-sm">
             <ResponsiveContainer>
               <span className="px-6 text-xl font-medium">Active Students</span>
@@ -132,8 +176,11 @@ const Dashboard = () => {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          {/* <DashboardCard title="Number of Classes" number={30} />
-          <DashboardCard title="Number of Departments" number={10} /> */}
+
+          */}
+          
+          
+          
         </div>
       </div>
     </div>

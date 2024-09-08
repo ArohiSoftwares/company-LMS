@@ -189,18 +189,31 @@ const getMyCourses = asyncHandler(async (req, res, next) => {
 
         const student = await Enrollment.findOne({ studentEmail });
 
-        console.log('Student => ', student);
+        if(!student) {
+            return res
+            .status(200)
+            .json(new ApiResponse(200, 'Student not enrolled in any course', []));
+        }
 
         const studentCourses = student.studentCourses;
 
         console.log('studentCourses => ', studentCourses);
 
+        if(!studentCourses) {
+            return res
+            .status(200)
+            .json(new ApiResponse(200, 'Student not enrolled in any course', []));
+        }
+
         const enrolledCourses = await Course.find({ courseCode: { $in: studentCourses } });
 
         console.log('enrolled Courses => ', enrolledCourses);
 
-        return res.status(200).json(new ApiResponse(200, 'Student courses fetched successfully', enrolledCourses));
-    } catch (error) {
+        return res
+        .status(200)
+        .json(new ApiResponse(200, 'Student courses fetched successfully', enrolledCourses));
+    } 
+    catch (error) {
         console.log(error);
         return res.status(400).json(new ApiError(400, error.message));
     }

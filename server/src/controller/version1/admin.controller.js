@@ -1,12 +1,13 @@
-import { Admin } from '../../models/admin.model.js';
-import { asyncHandler } from '../../utils/asyncHandler.js';
 import bcrypt from 'bcrypt';
-import ApiError from '../../utils/ApiError.js';
-import ApiResponse from "../../utils/ApiResponse.js"
-import { Teacher } from '../../models/teacher.model.js';
-import { Student } from '../../models/student.model.js';
+
+import { Admin } from '../../models/admin.model.js';
 import { Course } from '../../models/course.model.js';
-import { documentUpload } from '../../helpers/lecture.cloudinary.js';
+import { Payment } from '../../models/payment.model.js';
+import { Student } from '../../models/student.model.js';
+import { Teacher } from '../../models/teacher.model.js';
+import ApiError from '../../utils/ApiError.js';
+import ApiResponse from '../../utils/ApiResponse.js';
+import { asyncHandler } from '../../utils/asyncHandler.js';
 
 const cookieOptions = {
     maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -295,14 +296,65 @@ const addTeacher = asyncHandler(async (req, res) => {
 });
 
 
+const getTotalSale = asyncHandler(async (req, res) => {
+
+
+    try {
+        const totalSale = await Payment.aggregate([
+            {
+                $match: {
+                    status: 'paid'
+                }
+            },
+    
+            {
+                $group: {
+    
+                    _id: '$courseCode',
+                    totalSale: {
+                        $sum: '$amount'
+                    }
+                }
+            },
+            {
+                $project: {
+                   
+                    totalSale: 1,
+                }
+            }
+        ])
+
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200, 
+                'Total sale fetched successfully', 
+                totalSale
+            )
+        );
+
+
+
+    } 
+    
+    catch (error) {
+        console.log(error);
+        throw new ApiError(500, error.message);
+    }
+    
+})
+
 export {
-    createAdmin, /// create admin
-    createTeacher, //// create teacher
-    updateAdmin,
-    logoutAdmin,
-    getTeachers,
-    showAllCourses,
-    getTotalStudentsEnrolled,
-    getCourses,
-    addTeacher
+  addTeacher,
+  createAdmin,
+  createTeacher,
+  getCourses,
+  getTeachers,
+  getTotalSale,
+  getTotalStudentsEnrolled,
+  logoutAdmin,
+  showAllCourses,
+  updateAdmin,
 };

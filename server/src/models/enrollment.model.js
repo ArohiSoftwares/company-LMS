@@ -6,7 +6,8 @@ const enrollmentSchema = new Schema({
 
 
     studentEmail: {
-        type: String
+        type: String,
+        required: true
     },
 
     studentCourses: [{

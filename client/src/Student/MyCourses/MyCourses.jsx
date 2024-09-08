@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {useParams} from "react-router-dom"
+
 
 function MyCourses() {
   const [courses, setCourses] = useState([{
@@ -20,12 +20,12 @@ function MyCourses() {
     uploadcourses:"Upload Lecture ",
     courseCode:"",
     courseThumbnail:"",
-   
+
 
 
   }]);
 
-  const { courseCode }=useParams();
+
 
   
   const fetchCourses = async () => {
@@ -35,10 +35,14 @@ function MyCourses() {
       console.log("response.data =>", response.data);
       console.log("response.data.data =>", response.data.data);
 
+
+
       if(response.data.data.length === 0){
         return (
           <div> 
-            <p> you have not purchased any course yet</p>
+            <p className="text-center text-white text-2xl font-bold">
+              You have not created any course yet
+            </p>
           </div>
         )
       }
@@ -47,7 +51,7 @@ function MyCourses() {
     } 
     catch (error) {
       console.log(error);
-      window.location.href="/login";
+      // window.location.href="/login";
     }
   };
 
@@ -55,6 +59,21 @@ function MyCourses() {
     fetchCourses();
 
   },[]); // Adding an empty dependency array to prevent infinite loops
+
+
+
+
+  if(courses.length <= 0){
+    return (
+      <div> 
+        <p className="text-center text-white text-2xl font-bold">
+          You have not created any course yet
+        </p>
+      </div>
+    )
+  }
+
+
 
   return (
     <>
@@ -67,7 +86,7 @@ function MyCourses() {
 
         <div className="flex justify-around flex-wrap">
 
-          {courses.map((course) => (
+          { courses?.map((course) => (
             <div
               key={course._id}
               className="bg-black text-white rounded-lg shadow-lg w-[25rem] overflow-hidden"

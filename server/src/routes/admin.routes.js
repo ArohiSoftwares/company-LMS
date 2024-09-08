@@ -1,18 +1,18 @@
 import express from 'express';
-import { Admin } from '../models/admin.model.js';
+
 import {
-    createAdmin,
-    createTeacher,
-    getCourses,
-    getTeachers,
-    logoutAdmin,
-    getTotalStudentsEnrolled,
-    updateAdmin,
-    addTeacher
+  addTeacher,
+  createAdmin,
+  createTeacher,
+  getCourses,
+  getTeachers,
+  getTotalSale,
+  getTotalStudentsEnrolled,
+  logoutAdmin,
+  updateAdmin,
 } from '../controller/version1/admin.controller.js';
-import { upload } from '../middlewares/multer.middleware.js';
 import isAdminLogin from '../middlewares/admin.auth.js';
-import { createCourse } from '../controller/version1/course.controller.js';
+import { upload } from '../middlewares/multer.middleware.js';
 
 const adminRouter = express.Router();
 
@@ -32,5 +32,17 @@ adminRouter.route('/updateAdmin').post(isAdminLogin, upload.none(), updateAdmin)
 adminRouter.route('/getTeachers').get(isAdminLogin, upload.none(), getTeachers);
 
 adminRouter.route('/logout').get(isAdminLogin, upload.none(), logoutAdmin);
+
+
+
+adminRouter.route("/getTotalSale").get(
+    isAdminLogin,
+    upload.none(),
+    getTotalSale
+
+)
+
+
+
 
 export default adminRouter;

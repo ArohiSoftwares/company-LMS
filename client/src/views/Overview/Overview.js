@@ -137,7 +137,7 @@ function Overview() {
 
         image: "https://example.com/your_logo",
         order_id: order.id,
-        callback_url: `/api/payment/verifyPaymentForCourse/${courseCode}`,
+        callback_url: `/api/payment/verifyPaymentForCourse/${courseCode}/${amount}`,
 
         prefill: {
           name: "Gaurav ghuge",
@@ -173,7 +173,9 @@ function Overview() {
             Welcome to Our {category.courseName}
           </h1>
 
-        
+          
+
+
         </div>
 
         <div className="bg-gradient-to-b from-gray-800 to-cyan-850 text-white rounded-lg shadow-lg overflow-hidden my-5 p-5 mx-5 sm:mx-10">

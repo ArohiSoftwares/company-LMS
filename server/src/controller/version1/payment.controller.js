@@ -1,14 +1,13 @@
+import crypto from 'crypto';
+
 import { paymentInstance } from '../../../index.js';
 import { Course } from '../../models/course.model.js';
+import { Enrollment } from '../../models/enrollment.model.js';
 import { Payment } from '../../models/payment.model.js';
 import { Student } from '../../models/student.model.js';
 import ApiError from '../../utils/ApiError.js';
-import { asyncHandler } from '../../utils/asyncHandler.js';
 import ApiResponse from '../../utils/ApiResponse.js';
-import crypto from 'crypto';
-import { clientUrl } from '../../../app.js';
-import { Enrollment } from '../../models/enrollment.model.js';
-import { log } from 'console';
+import { asyncHandler } from '../../utils/asyncHandler.js';
 
 const createPaymentForCourse = asyncHandler(async (req, res) => {
     const { amount } = req.body;
@@ -45,7 +44,7 @@ const verifyPaymentForCourse = asyncHandler(async (req, res) => {
     console.log(req.body);
 
     const { studentEmail } = req.user;
-    const {courseCode} = req.params  || req.query;
+    const {courseCode, amount} = req.params  || req.query;
     
 
     console.log("req.user => ",req.user);
@@ -130,7 +129,9 @@ const verifyPaymentForCourse = asyncHandler(async (req, res) => {
             razorpay_payment_id,
             transactionDate : Date.now(),
             razorpay_signature,
-            status : 'paid'
+            status : 'paid',
+            amount: amount || 0
+
             
         })
 
@@ -171,4 +172,8 @@ const getUserPaymentbyCourseCode = asyncHandler(async (req, res) => {
     }
 });
 
-export { createPaymentForCourse, verifyPaymentForCourse, getUserPaymentbyCourseCode };
+export {
+  createPaymentForCourse,
+  getUserPaymentbyCourseCode,
+  verifyPaymentForCourse,
+};
