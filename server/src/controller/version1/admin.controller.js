@@ -2,7 +2,7 @@ import { Admin } from '../../models/admin.model.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import bcrypt from 'bcrypt';
 import ApiError from '../../utils/ApiError.js';
-import ApiResponse from '../../utils/apiResponse.js';
+import ApiResponse from "../../utils/ApiResponse.js"
 import { Teacher } from '../../models/teacher.model.js';
 import { Student } from '../../models/student.model.js';
 import { Course } from '../../models/course.model.js';
