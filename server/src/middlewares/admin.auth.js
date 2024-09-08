@@ -1,7 +1,6 @@
 import JWT from 'jsonwebtoken';
 import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/apiResponse.js';
-
+import ApiResponse from '../utils/ApiResponse.js';
 const isAdminLogin = (req, res, next) => {
 
     try {
