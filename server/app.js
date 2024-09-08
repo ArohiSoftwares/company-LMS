@@ -10,7 +10,7 @@ import { getCloudinaryKeys } from './src/controller/version1/video.controller.js
 
 const app = express();  /// create express app
 
-export const clientUrl = "http://localhost:3000";
+export const clientUrl = ["http://localhost:3000", "http://localhost:5173"];
 
 
 app.use(express.json());
@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 app.use(cookieParser())
 app.use(
 cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"],
+    origin: process.env.CLIENT_URL,
     credentials: true
 })
 )

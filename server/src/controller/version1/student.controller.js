@@ -133,7 +133,7 @@ const studentUpdate = asyncHandler(async (req, res, next) => {
             const uploadedFile = await uploadOnCloudinary(path);
 
 
-            user.studentAvatar.public_id = uploadedFile.public_id;
+            user.studentAvatar.public_id = uploadedFile?.public_id;
             user.studentAvatar.public_url = uploadedFile?.url;
 
 
