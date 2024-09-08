@@ -39,7 +39,7 @@ next()
 
 app.get('/api/getkey', (req, res) => {
 
-    res
+    return res
     .json(
         {key : process.env.RAZORPAY_KEY_ID}
     );
