@@ -223,14 +223,14 @@ const UploadVideo = () => {
                 )}
               </div>
 
-              {/****
+                {/***
               <div className="form-row">
 
                 <div className="form-group">
                   <label>Lecture Image *</label>
                   <input type="file" name="lectureImage" onChange={handleInputChange} accept="image/*" />
                 </div>
-
+                
 
                 <div className="form-group">
                   <label>Attachments *</label>
@@ -239,32 +239,39 @@ const UploadVideo = () => {
 
               </div>
 
- */}
+              */}
+
+ 
             </form>
           </div>
         </div>
       )}
 
-      <div className="video-list-container">
-        {filteredVideos.map((video) => (
-          <div
-            key={video.id}
-            className="video-item"
-            onClick={() => handleVideoClick(video)}
-          >
-            <h3>{video.title}</h3>
-            <p>Instructor: {video.instructor}</p>
-            <p>Tags: {video.tags}</p>
-            <p>Category: {video.category}</p>
-            <p>Duration: {video.duration}</p>
-            <p>Lecture Name: {video.lectureName}</p>
-            <p>Course Code: {video.courseCode}</p>
-            <p>Lecture Description: {video.lectureDescription}</p>
-            <p>Rating: {video.rating}</p>
-            <p>Teacher Mail: {video.teacherMail}</p>
-          </div>
-        ))}
+
+
+      <div>
+        <h2 className="text-center text-5xl font-semibold"> Instructions and GuideLines For Video Uploading </h2>
+
+        <br/>
+
+        <ul className="text-lg">
+
+
+        <li type="disc">Ensure the video is in a web-compatible format like MP4, WebM, or Ogg.</li>
+        <li type="disc">Compress the video to reduce file size for faster loading and smoother playback.</li>
+        <li type="disc">Host the video on a reliable platform or server for easy access and sharing.</li>
+        <li type="disc">Include video metadata such as titles, descriptions, and keywords for better searchability.</li>
+        <li type="disc">Test the video on multiple devices and browsers to ensure compatibility and responsiveness.</li>
+          
+        </ul>
+      
+      
+      
       </div>
+      
+
+
+
     </div>
   );
 };

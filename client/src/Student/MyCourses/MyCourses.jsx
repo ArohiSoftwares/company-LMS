@@ -107,7 +107,7 @@ function MyCourses() {
               
                 <div className="mt-7 flex justify-between mb-2 text-gray-300 text-xl font-bold">
                   <div>By {course.adminEmail}</div>
-                  <div>Price: ₹{course.coursePrice}</div>
+                  <div>Price: ₹{course.coursePrice /100}</div>
                 </div>
               </div>
               <div className="flex justify-center space-x-4 text-2xl mb-2">

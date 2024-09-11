@@ -130,7 +130,7 @@ const verifyPaymentForCourse = asyncHandler(async (req, res) => {
             transactionDate : Date.now(),
             razorpay_signature,
             status : 'paid',
-            amount: amount || 0
+            amount: amount
 
             
         })

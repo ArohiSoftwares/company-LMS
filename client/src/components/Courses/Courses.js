@@ -100,7 +100,7 @@ function Courses() {
 
             <div className="mt-7 flex flex-col justify-between mb-2  text-gray-300  text-xl font-bold">
               <div> By {course.adminEmail}</div>
-              <div className="text-green-300"> ₹ {course.coursePrice}</div>
+              <div className="text-green-300"> ₹ {course.coursePrice /100}</div>
             </div>
           </div>
           

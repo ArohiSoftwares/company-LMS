@@ -112,7 +112,7 @@ function Navbar() {
 
   
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-gray-800 w-full">
 
       {({ open }) => (
 

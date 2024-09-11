@@ -119,7 +119,7 @@ function Overview() {
       } = await axios.get("/api/getkey");
 
       const data = {
-        amount: amount || 2000,
+        amount: amount,
       };
 
       const {
@@ -200,7 +200,7 @@ function Overview() {
                 Only:{" "}
                 <span className=" text-cyan-400">
                   {" "}
-                  💵 ₹ {category.coursePrice}
+                  💵 ₹ {category.coursePrice / 100}
                 </span>
               </p>
 
@@ -208,8 +208,8 @@ function Overview() {
               <button
                 onClick={
                   
-                  type === "student"
-                    ? () => checkoutHandler(category.coursePrice, courseCode)
+                  type
+                    ? () => checkoutHandler(category.coursePrice /100, courseCode)
                     : navigate("/login")
 
 
