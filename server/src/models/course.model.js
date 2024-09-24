@@ -141,12 +141,7 @@ const CourseSchema = new mongoose.Schema(
 
         courseTools: [
             {
-                toolName: {
-                    type: String
-                },
-                toolImage: {
-                    type: String
-                }
+                type: String
             }
         ],
 
