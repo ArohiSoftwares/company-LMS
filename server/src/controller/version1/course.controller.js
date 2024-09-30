@@ -19,14 +19,9 @@ import dontenv from 'dotenv';
 import { Teacher } from '../../models/teacher.model.js';
 dontenv.config();
 
-
 // const awsBucket = "lmsbucket12"
 
-
-const awsBucket = 'videostreaming31'
-
-
-
+const awsBucket = 'videostreaming31';
 
 const client = new S3Client({
     region: process.env.REGION,
@@ -115,7 +110,8 @@ const createCourse = asyncHandler(async (req, res) => {
                 private_url: response.secure_url
             }
         });
-
+        course.courseTools.push(...courseTools);
+        await course.save();
         // const teacher = await Teacher.findOne({ teacherEmail: courseTeacher });
 
         // teacher.teacherCourseCode.push(courseCode);
@@ -365,7 +361,6 @@ const uploadLectures = asyncHandler(async (req, res) => {
     }
 });
 
-
 const sendSignedUrl = async (req, res) => {
     const { courseCode } = req.query;
     const filename = `video-${courseCode}-${Date.now()}.mp4`;
@@ -383,42 +378,30 @@ const sendSignedUrl = async (req, res) => {
     res.status(200).json({ signedurl });
 };
 
-
-
-
-
-
 const saveVideo = asyncHandler(async (req, res) => {
-
     try {
         const { videourl } = req.body;
 
         const { teacherEmail } = req.user;
-    
+
         const { lectureName, lectureDescription, courseCode } = req.body;
-    
+
         const course = await Course.findOne({ courseCode });
-    
-        if(!course) {
-            return res
-            .status(404)
-            .json(new ApiError(404, 'Course not found'));
+
+        if (!course) {
+            return res.status(404).json(new ApiError(404, 'Course not found'));
         }
-    
-    
+
         // lecture.video.push({
         //     public_id: videourl,
         //     private_url: `https://d39jdi690r10yx.cloudfront.net/uploads/user/${videourl}`,
         //     lectureName,
         //     lectureDescription
         // });
-    
-    
+
         // create lecture in database
-    
-        
+
         const lecture = await Lecture.create({
-            
             lectureName,
             lectureDescription,
             courseCode,
@@ -427,26 +410,18 @@ const saveVideo = asyncHandler(async (req, res) => {
                 public_id: videourl,
                 private_url: `https://d39jdi690r10yx.cloudfront.net/uploads/user/${videourl}`
             }
-        })
-    
+        });
+
         console.log('lecture => ', lecture);
-    
+
         await lecture.save();
-    
-        return res
-        .status(200)
-        .json(new ApiResponse(200, 'Lecture created successfully', lecture));
-    } 
-    catch (error) {
-        console.log("Error in saveVideo =>", error);
+
+        return res.status(200).json(new ApiResponse(200, 'Lecture created successfully', lecture));
+    } catch (error) {
+        console.log('Error in saveVideo =>', error);
         throw new ApiError(400, error.message);
     }
 });
-
-
-
-
-
 
 export {
     createCourse,
