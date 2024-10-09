@@ -94,7 +94,7 @@ const Dashboard = () => {
             <ResponsiveContainer>
               <span className="px-6 text-xl font-medium">Total Sales</span>
               <br />
-              <span className="px-6 text-3xl fixed">
+              <span className="px-6 text-3xl absolute">
 
                 {
                   ans

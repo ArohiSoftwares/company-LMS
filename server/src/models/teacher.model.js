@@ -18,6 +18,14 @@ const TeacherSchema = new mongoose.Schema(
         teacherProfile: {
             type: String
         },
+        teacherProfileUrl:{
+            public_id: {
+                type: String
+            },
+            private_url: {
+                type: String
+            }
+        },
 
         adminEmail: {
             type: String
