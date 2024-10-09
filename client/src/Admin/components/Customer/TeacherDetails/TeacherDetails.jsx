@@ -57,7 +57,8 @@ const TeacherDetails = ({ teacher }) => {
             )}
           </div>
           <div>
-            <h1 className="text-2xl font-bold">{teacher.teacherUserName}</h1>
+            <h1 className="text-2xl font-bold">{teacher.teacherFullName}</h1>
+            <h3 className="">{teacher.teacherUserName}</h3>
             <p className="text-sm opacity-80">{teacher.teacherEmail}</p>
           </div>
         </div>
@@ -109,7 +110,6 @@ const TeacherDetails = ({ teacher }) => {
                 ))}
             </div>
           </div>
-         
         </div>
       </div>
     </div>

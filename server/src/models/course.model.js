@@ -12,11 +12,11 @@ const CourseSchema = new mongoose.Schema(
             }
         ],
 
-        teacherEmail: [{
-
-            type: String
-            
-        }],
+        teacherEmail: [
+            {
+                type: String
+            }
+        ],
 
         courseName: {
             type: String
@@ -102,28 +102,8 @@ const CourseSchema = new mongoose.Schema(
 
         courseTeacher: [
             {
-                type: String
-
-                // teacher: {
-                // 	type: mongoose.Schema.Types.ObjectId,
-                // 	ref: 'Teacher',
-
-                // },
-
-                // teacherName: {
-                // 	type: String,
-
-                // },
-
-                // teacherSubject:{
-                // 	type: String,
-
-                // },
-                // teacherImage: {
-                // 	type: String,
-                // 	default: '',
-
-                // }
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Teacher'
             }
         ],
 

@@ -15,6 +15,12 @@ const cookieOptions = {
     secure: true
 };
 
+const getUser = asyncHandler(async (req, res) => {
+    const { adminEmail } = req.user;
+    const user = await Admin.findOne({ adminEmail });
+    return res.status(200).json(new ApiResponse(200, 'User fetched successfully', user));
+}); 
+
 const createAdmin = asyncHandler(async (req, res) => {
     try {
         const { studentEmail, studentPassword } = req.body;
@@ -85,7 +91,9 @@ const getTotalStudentsEnrolled = asyncHandler(async (req, res) => {
 
 const createTeacher = asyncHandler(async (req, res) => {
     try {
-        const { studentEmail, studentPassword, subjects, yof, qualifications, bio } = req.body;
+        const { studentEmail, studentPassword, subjects, yof, qualifications, bio,teacherProfileUrl } = req.body;
+
+        console.log("teacherProfileUrl ==============> ",req.body);
 
         const { adminEmail } = req.user;
 
@@ -119,9 +127,10 @@ const createTeacher = asyncHandler(async (req, res) => {
         }
         
         // const uploadDoc = await documentUpload(req.file.path);
+        console.log("teacherProfileUrl ==============> ",req.file.path);
+        const uploadedProfileUrl = await uploadOnCloudinary(req.file.path);
 
         /// create a entry in admin collection
-        console.log(res);
         const teacher = await Teacher.create({
             teacherName: user.studentName,
             teacherUserName: user.studentUserName,
@@ -135,6 +144,10 @@ const createTeacher = asyncHandler(async (req, res) => {
             teacherQualifications: qualifications,
             teacherYearOfExperience: yof,
             teacherbio: bio,
+            teacherProfileUrl: {
+                public_id: uploadedProfileUrl.public_id,
+                private_url: uploadedProfileUrl.secure_url
+            },
             teacherCourseCode: []
             
         });
@@ -346,15 +359,64 @@ const getTotalSale = asyncHandler(async (req, res) => {
     
 })
 
+const deleteTeacher = asyncHandler(async (req, res) => {
+    const { teacherEmail } = req.body;
+
+    try {
+        const teacher = await Teacher.findOne({ teacherEmail });
+
+        if (!teacher) {
+            return res.status(400).json(new ApiError(400, 'Teacher not found'));
+        }
+
+        await Teacher.findByIdAndDelete(teacher._id);
+
+        return res.status(200).json(new ApiResponse(200, 'Teacher deleted successfully'));
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(new ApiError(400, error.message));
+    }
+});
+
+
+const updateTeacher = asyncHandler(async (req, res) => {
+    const { teacherEmail, teacherFullName, teacherUserName, teacherAge, teacherGender, teacherPassword, teacherPhoneNumber } = req.body;
+
+    try {
+        const teacher = await Teacher.findOne({ teacherEmail });
+
+        if (!teacher) {
+            return res.status(400).json(new ApiError(400, 'Teacher not found'));
+        }
+
+        await Teacher.findByIdAndUpdate(teacher._id, {
+            teacherFullName,
+            teacherUserName,
+            teacherAge,
+            teacherGender,
+            teacherPassword,
+            teacherPhoneNumber
+        });
+
+        return res.status(200).json(new ApiResponse(200, 'Teacher updated successfully'));
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(new ApiError(400, error.message));
+    }
+});
+
 export {
-  addTeacher,
-  createAdmin,
-  createTeacher,
-  getCourses,
-  getTeachers,
-  getTotalSale,
-  getTotalStudentsEnrolled,
-  logoutAdmin,
-  showAllCourses,
-  updateAdmin,
+    addTeacher,
+    createAdmin,
+    createTeacher,
+    getCourses,
+    getTeachers,
+    getTotalSale,
+    deleteTeacher,
+    updateTeacher,
+    getTotalStudentsEnrolled,
+    logoutAdmin,
+    showAllCourses,
+    updateAdmin,
+    getUser
 };

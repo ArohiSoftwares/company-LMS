@@ -61,7 +61,6 @@ export function ProtectedAdminRoute() {
         {hideSidebar && (
           <div className={sidebarClasses}>
             <div className="p-4 flex justify-between items-center w-[280px]">
-              <h1 className="text-2xl font-bold text-red-500">Admin</h1>
               <button
                 className="text-gray-400 hover:text-green-500 lg:hidden"
                 onClick={null}
