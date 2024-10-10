@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Lock } from "lucide-react";
 import axios from "axios";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { message } from "react-message-popup";
 
 const ResetPassword = () => {

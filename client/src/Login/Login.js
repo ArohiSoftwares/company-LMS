@@ -4,13 +4,14 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "../store/User/userSlice";
-import { message } from "react-message-popup";
+
 
 function Login() {
+
   const dispatch = useDispatch();
-  const user = useSelector(setUser);
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,23 +29,15 @@ function Login() {
       studentPassword: password,
     };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
     try {
+
       // api call to login the user
       const response = await axios.post("/api/type/login", body);
-      const result = response.data;
-
-      toast.success(result.message);
-
+      const result = response?.data;
 
 
       /// if the login is successful, redirect the user to the home page
-      if (result.success) {
+      if (result?.success) {
         if (result.data.teacherType) {
           dispatch(setUser(result.data.teacherType));
           navigate("/");
@@ -58,9 +51,13 @@ function Login() {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
-      message.error(error?.message);
+      const message = error?.response?.data?.error
+      
+      setError(message);
+    
     }
   };
 
@@ -94,7 +91,10 @@ function Login() {
               Login
             </h2>
 
-            {/**  */}
+            {/**  show error here */}
+            {
+                error && <div className="text-red-500 text-center">{error}</div>
+            }
 
             <form onSubmit={handleLogin}>
               {/***  email input field */}
@@ -127,6 +127,7 @@ function Login() {
                   id="password"
                   placeholder="Enter your password"
                   value={password}
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 />
@@ -157,6 +158,7 @@ function Login() {
             </form>
 
             {/*** google login button */}
+            {/**   
             <div className="my-4 text-center">
               <button
                 type="button"
@@ -170,6 +172,8 @@ function Login() {
                 Login with Google
               </button>
             </div>
+            */}  
+
           </div>
         </div>
       </div>

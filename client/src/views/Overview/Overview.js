@@ -7,6 +7,7 @@ import Companies from "../../components/Companies/Companies";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { extractErrorMessage } from "../../components/CustomError/Response.error";
 
 function Overview() {
   const [activeCourse, setActiveCourse] = useState(null);
@@ -99,10 +100,9 @@ function Overview() {
       console.log(" response => ", response);
 
       console.log("data => ", response.data);
-      // alert(response.data.message);
-
       setCategory(response.data.data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
       alert("could not fetch the course");
     }
@@ -126,29 +126,23 @@ function Overview() {
         data: { order },
       } = await axios.post("/api/payment/createPaymentForCourse", data);
 
-      console.log(window);
-
       const options = {
         key,
         amount: amount,
         currency: "INR",
         name: "gaurav ghuge",
         description: "Test Transaction of softwares",
-
         image: "https://example.com/your_logo",
         order_id: order.id,
         callback_url: `/api/payment/verifyPaymentForCourse/${courseCode}/${amount}`,
-
         prefill: {
           name: "Gaurav ghuge",
           email: "gauravghuge@microsoft.com",
           contact: "8767482793",
         },
-
         notes: {
           address: "Razorpay Corporate Office",
         },
-
         theme: {
           color: "#83E633",
         },
@@ -157,125 +151,126 @@ function Overview() {
       let razor = new window.Razorpay(options);
 
       razor.open();
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
-      navigate("/login");
+      console.log(error.response.data);
+
+      const message = extractErrorMessage(error.response.data);
+
+      if(message === "unauthorised user") {
+          navigate("/login")
+      }
+
     }
   };
 
+  const buyCourse = async (courseCode, amount) => {
+
+
+    if (!type) {
+      navigate("/login");
+    }
+
+    checkoutHandler(category.coursePrice, courseCode)
+                
+  }
+
   return (
-    <div>
+    <div className="bg-black text-white min-h-screen">
       <Navbar />
 
-      <div key={category.id}>
-        <div className="text-center my-3">
-          <h1 className="text-5xl font-bold text-cyan-500">
+        {/*  Headline Section */}
+      <div className="bg-gradient-to-r from-black via-gray-900 to-gray-800 py-12">
+        <div className="text-center px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-cyan-400 animate-fadeInSlow transition duration-1000 ease-in-out">
             Welcome to Our {category.courseName}
           </h1>
-
-          
-
-
+          <p className="mt-4 text-lg sm:text-xl lg:text-2xl text-gray-300 font-semibold max-w-3xl mx-auto">
+            Start your journey in {category.courseName} with expert guidance, engaging projects, and hands-on learning.
+          </p>
         </div>
-
-        <div className="bg-gradient-to-b from-gray-800 to-cyan-850 text-white rounded-lg shadow-lg overflow-hidden my-5 p-5 mx-5 sm:mx-10">
-          <div className="flex flex-col lg:flex-row justify-around items-center p-5 lg:p-20">
-            <div className="flex-1 mb-5 lg:mb-0">
-              <p className="text-3xl sm:text-4xl font-bold">
-                {category.courseName}
-              </p>
+      </div>
 
 
-              {/* <p className="text-xl sm:text-2xl mt-7 font-semibold">
-                <span className="bg-gray-700 rounded p-2 pl-4 pr-4">
-                  {category.btn1}
-                </span>
-                <span className="ml-2 bg-gray-700 rounded p-2 pl-4 pr-4">
-                  {category.btn2}
-                </span>
-              </p> */}
-
-
-              <p className="text-4xl sm:text-5xl font-bold mt-14">
-                Only:{" "}
-                <span className=" text-cyan-400">
-                  {" "}
-                  💵 ₹ {category.coursePrice / 100}
-                </span>
-              </p>
-
-
-              <button
-                onClick={
-                  
-                  type
-                    ? () => checkoutHandler(category.coursePrice /100, courseCode)
-                    : navigate("/login")
-
-
-                }
-                className="mt-8 p-4 bg-cyan-500 rounded hover:bg-cyan-850 font-bold text-2xl mb-5"
-              >
-                Buy Now - Start Learning
-              </button>
-
-
-              <p className="text-base sm:text-2xl font-semibold mt-2">
-                {category.courseDescription}
-              </p>
-            </div>
-
-            <div className="flex-1">
+        {/* Course Details Section */}
+        <div className="bg-gradient-to-b from-gray-900 to-black text-white rounded-lg shadow-xl overflow-hidden my-8 p-6 sm:p-10 mx-4 lg:mx-20 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl">
+        <div className="flex flex-col lg:flex-row justify-between items-center">
+          {/* Course Description */}
+          <div className="flex-1 mb-10 lg:mb-0">
+            <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400 transition-colors duration-300 hover:text-cyan-300">
+              {category.courseName}
+            </p>
+            
+            {/* Price */}
+            <p className="text-4xl sm:text-5xl font-bold mt-10">
+              Only:{" "}
+              <span className="text-cyan-400 animate-pulse">
+                💵 ₹ {category.coursePrice / 100}
+              </span>
+            </p>
+      
+            {/* Buy Now Button */}
+            <button
+              onClick={() => buyCourse(courseCode, category.coursePrice)}
+              className="mt-8 py-4 px-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:from-purple-600 hover:to-pink-600 font-bold text-2xl transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg active:scale-95"
+            >
+              Buy Now - Start Learning
+            </button>
+      
+            {/* Course Description */}
+            <p className="text-base sm:text-xl font-semibold mt-5 text-gray-300">
+              {category.courseDescription}
+            </p>
+          </div>
+      
+          {/* Course Thumbnail */}
+          <div className="flex-1 lg:ml-10">
+            <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 overflow-hidden rounded-lg shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl">
               <img
                 src={category.courseThumbnail.private_url}
                 alt={category.courseName}
-                className="h-48 sm:h-72 lg:ml-20 rounded-lg"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-in-out hover:rotate-3"  // Added hover rotation
               />
+              <div className="absolute inset-0 border-4 border-gradient-to-r from-purple-500 to-pink-500 rounded-lg pointer-events-none" />
             </div>
           </div>
+
+        </div>
+      </div>
+      
+
+
+
+
+        {/* Highlights Section */}
+        <div className="flex flex-wrap justify-center gap-8 my-20">
+          {[
+            { label: "Projects", value: category.projects },
+            { label: "Assignments", value: category.assignment },
+            { label: "Lectures", value: category.lectures },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="relative text-center font-bold text-3xl p-10 rounded-3xl"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-3xl border-2 border-transparent animate-pulse"></div>
+              <div className="relative text-cyan-400 bg-gray-800 rounded-3xl p-10 font-sans shadow-lg">
+                <p className="text-4xl mb-2">{item.value}</p>
+                {item.label}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* <div className="flex flex-col mt-10 items-center">
-          <img
-            src={category.courseThumbnail.private_url}
-            alt={category.courseName}
-            className="h-48 sm:h-72 lg:ml-20 rounded-lg mb-10"
-          />
-        </div> */}
-
-        <div className="flex justify-center flex-wrap my-20">
-          <div className="relative text-center font-bold text-3xl mr-10 ml-10 p-10 rounded-3xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-3xl border-2 border-transparent animate-pulse"></div>
-            <div className="relative text-cyan-400 bg-gray-800 rounded-3xl p-10 font-sans">
-              <p className="text-4xl">{category.projects}</p>
-              Projects
-            </div>
-          </div>
-          <div className="relative text-center font-bold text-3xl mr-10 ml-10 p-10 rounded-3xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-3xl border-2 border-transparent animate-pulse"></div>
-            <div className="relative text-cyan-400 bg-gray-800 rounded-3xl p-10 font-sans">
-              <p className="text-4xl">{category.assignment}</p>
-              Assignments
-            </div>
-          </div>
-          <div className="relative text-center font-bold text-3xl mr-10 ml-10 p-10 rounded-3xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-3xl border-2 border-transparent animate-pulse"></div>
-            <div className="relative text-cyan-400 bg-gray-800 rounded-3xl p-10 font-sans">
-              <p className="text-4xl">{category.lectures}</p>
-              Lectures
-            </div>
-          </div>
-        </div>
-
+        {/* Course Content Section */}
         <div className="flex flex-col items-center mt-20 mb-10">
-          <h2 className="text-4xl text-cyan-500 mt-20 font-bold">
-            What You ll Learn
-          </h2>
-          <h2 className="text-4xl text-white mt-2 font-bold">
-            From Start to Victory
-          </h2>
+          <h2 className="text-4xl text-cyan-500 font-bold">What You’ll Learn</h2>
+          <h2 className="text-4xl text-white mt-2 font-bold">From Start to Victory</h2>
+
+          {/* Toggle Content for Node.js */}
           <button
-            className="bg-gray-800 text-white text-2xl mt-12 p-3 cource-button rounded-lg m-2 hover:bg-cyan-700"
+            className="bg-gray-800 text-white text-2xl mt-12 py-3 px-6 rounded-lg hover:bg-cyan-700 transition duration-300 ease-in-out"
             onClick={() =>
               setActiveCourse(activeCourse === "nodejs" ? null : "nodejs")
             }
@@ -283,7 +278,7 @@ function Overview() {
             {activeCourse === "nodejs" ? "Hide" : "Show"} Node.js Content
           </button>
           {activeCourse === "nodejs" && (
-            <div className="p-4 bg-gray-800 text-cyan-400 rounded-lg mt-8 w-11/12 text-xl font-bold">
+            <div className="p-4 bg-gray-800 text-cyan-400 rounded-lg mt-8 w-11/12 text-xl font-bold shadow-md">
               <h2 className="text-3xl mb-4">Node.js Course Content</h2>
               <ul className="list-disc list-inside text-white space-y-2">
                 {courseContent.nodejs.map((item, index) => (
@@ -293,8 +288,9 @@ function Overview() {
             </div>
           )}
 
+          {/* Toggle Content for Express.js */}
           <button
-            className="bg-gray-800 text-white text-2xl p-3 mt-7 rounded-lg cource-button  hover:bg-cyan-700"
+            className="bg-gray-800 text-white text-2xl mt-7 py-3 px-6 rounded-lg hover:bg-cyan-700 transition duration-300 ease-in-out"
             onClick={() =>
               setActiveCourse(activeCourse === "expressjs" ? null : "expressjs")
             }
@@ -302,9 +298,9 @@ function Overview() {
             {activeCourse === "expressjs" ? "Hide" : "Show"} Express.js Content
           </button>
           {activeCourse === "expressjs" && (
-            <div className="p-4 bg-gray-800 text-cyan-400 rounded-lg mt-2 w-11/12 text-xl font-bold">
+            <div className="p-4 bg-gray-800 text-cyan-400 rounded-lg mt-2 w-11/12 text-xl font-bold shadow-md">
               <h2 className="text-3xl mb-4">Express.js Course Content</h2>
-              <ul className="list-disc text-white list-inside space-y-2">
+              <ul className="list-disc list-inside text-white space-y-2">
                 {courseContent.expressjs.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
@@ -312,8 +308,9 @@ function Overview() {
             </div>
           )}
 
+          {/* Toggle Content for MongoDB */}
           <button
-            className="bg-gray-800 text-white p-3 text-2xl mt-7  cource-button rounded-lg m-2 hover:bg-cyan-700"
+            className="bg-gray-800 text-white text-2xl mt-7 py-3 px-6 rounded-lg hover:bg-cyan-700 transition duration-300 ease-in-out"
             onClick={() =>
               setActiveCourse(activeCourse === "mongodb" ? null : "mongodb")
             }
@@ -321,9 +318,9 @@ function Overview() {
             {activeCourse === "mongodb" ? "Hide" : "Show"} MongoDB Content
           </button>
           {activeCourse === "mongodb" && (
-            <div className="p-4 bg-gray-800  text-cyan-400 rounded-lg mt-2 w-11/12 text-2xl font-bold">
+            <div className="p-4 bg-gray-800 text-cyan-400 rounded-lg mt-2 w-11/12 text-xl font-bold shadow-md">
               <h2 className="text-3xl mb-4">MongoDB Course Content</h2>
-              <ul className="list-disc text-white list-inside space-y-2">
+              <ul className="list-disc list-inside text-white space-y-2">
                 {courseContent.mongodb.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
@@ -332,15 +329,14 @@ function Overview() {
           )}
         </div>
 
+        {/* Tools Section */}
         <div className="flex flex-col items-center mt-20 mb-10">
-          <h2 className="text-4xl text-cyan-500 mt-20 font-bold">
-            Master These Tools
-          </h2>
-          <div className="flex overflow-x-auto mt-10">
+          <h2 className="text-4xl text-cyan-500 font-bold">Master These Tools</h2>
+          <div className="flex overflow-x-auto mt-10 space-x-6 py-4">
             {tools.map((tool, index) => (
               <div
                 key={index}
-                className="bg-gray-800 text-white rounded-lg shadow-lg m-4 p-5 text-center"
+                className="bg-gray-800 text-white rounded-lg shadow-lg m-4 p-5 text-center flex-shrink-0"
                 style={{ minWidth: "200px" }}
               >
                 <img
@@ -353,13 +349,12 @@ function Overview() {
             ))}
           </div>
         </div>
-      </div>
+ 
 
       <Companies />
-
-      {/* <Faq/> */}
       <Footer />
     </div>
+
   );
 }
 
