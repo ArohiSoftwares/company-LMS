@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OrdersTable from "../Orders/OrdersTable";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 //Course Sidebar Data panel
 
@@ -10,14 +10,17 @@ const buttonClasses = "p-2 border border-border rounded";
 const primaryClasses = "bg-primary text-primary-foreground";
 
 // Define the CourseCard component
+const initialVideos = [];
 
 const CourseTable = () => {
   const [showOverview, setShowOverview] = useState(false);
   const [getCourse, setgetCourse] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState();
-  const [teacherDetails,setTeacherDetail] = useState();
+  const [teacherDetails, setTeacherDetail] = useState();
   const [selectedTeacher, setSelectedTeacher] = useState();
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     axios.get("/api/course/getCourses").then((res) => {
@@ -32,20 +35,96 @@ const CourseTable = () => {
       selectedProduct.courseTeacher.map((data) => {
         teacherDetails.map((teacher) => {
           if (teacher.teacherEmail === data) {
-            console.log(teacher)
+            console.log(teacher);
             setSelectedTeacher(teacher);
           }
           return null;
         });
         return null;
-      })
+      });
     }
-  }, [selectedProduct,showOverview]);
+  }, [selectedProduct, showOverview]);
+  const [file, setfile] = useState();
+  const [videos, setVideos] = useState(initialVideos);
+  const [showForm, setShowForm] = useState(false);
+  const [signedUrl, seteSignedUrl] = useState(null);
+  const [newVideo, setNewVideo] = useState({});
+  const [courseCode,setCourseCode]= useState();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewVideo({ ...newVideo, [name]: value });
+  };
+  const handleFile = (e) => {
+    setfile(e.target.files[0]);
+  };
+  const handleVideoUpload = async (e) => {
+    if (!file) return;
+
+    // const videoUrl = URL.createObjectURL(file);
+    // const video = document.createElement("video");
+
+    // video.preload = "metadata";
+    // video.onloadedmetadata = () => {
+    //   window.URL.revokeObjectURL(videoUrl);
+    //   const duration = Math.floor(video.duration);
+    //   const minutes = Math.floor(duration / 60);
+    //   const seconds = duration % 60;
+    //   setNewVideo({
+    //     ...newVideo,
+    //     video: videoUrl,
+    //     duration: ${minutes}m ${seconds}s,
+    //   });
+    // };
+    // video.src = videoUrl;
+    const response = await axios.post(
+      `/api/course/uploadLecturesa?courseCode=${courseCode}`
+    );
+    seteSignedUrl(response.data.signedurl);
+    console.log("response 1=>", response);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    const resposne2 = await axios.put(response.data.signedurl, file, {
+      headers: {
+        "Access-Control-Allow-Origin":
+          "videostreaming31.s3.eu-north-1.amazonaws.com",
+        "Access-Control-Allow-Credentials": true,
+        "Content-Type": "video/mp4",
+      },
+      onUploadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        console.log("Upload percentCompleted=>", percentCompleted);
+        setUploading(true);
+        setUploadProgress(percentCompleted);
+      },
+    });
+    const videoUrl = response.data.signedurl.split("/")[5].split("?")[0];
+
+    if (resposne2.status === 200) {
+      const videoForm = new FormData();
+      videoForm.append("videourl", videoUrl);
+      videoForm.append("lectureName", newVideo.lectureName);
+      videoForm.append("lectureDescription", newVideo.lectureDescription);
+      videoForm.append("courseCode", courseCode);
+      const response3 = await axios.post(
+        `/api/course/uploadLecturesa/videoUrl`,
+        videoForm
+      );
+      console.log("response 3=>", response3);
+    }
+
+    setUploading(false);
+
+    console.log("response 2=>", resposne2);
+  };
 
   const CourseCard = ({ product }) => (
     <div
       onClick={() => {
         setSelectedProduct(product);
+        setCourseCode(product.courseCode)
       }}
       className="flex bg-white rounded-2xl  flex-col "
     >
@@ -90,6 +169,12 @@ const CourseTable = () => {
               View Lectures
             </button>
           </Link>
+          <button
+            onClick={() => setShowForm(true)}
+            className="border-1 shadow-md rounded-lg border-gray-300 p-2 text-xl text-gray-600 hover:bg-gray-100 bg-blue-300 hover:text-green-500 transition-colors duration-200"
+          >
+            Upload Lecture
+          </button>
         </section>
         <Link to="/admin/updateCourse">
           <button className="border-1 shadow-md rounded-lg border-gray-300 p-2 text-xl text-gray-600 hover:bg-gray-100 bg-blue-300 hover:text-green-500 transition-colors duration-200">
@@ -103,7 +188,6 @@ const CourseTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
-    
     setSearchTerm(event.target.value);
     setFilteredProducts(
       getCourse.filter((product) =>
@@ -142,7 +226,106 @@ const CourseTable = () => {
             <CourseCard key={product.id} product={product} />
           ))}
         </div>
+        <div>
+          {showForm && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close-btn" onClick={() => setShowForm(false)}>
+                  &times;
+                </span>
+                <form
+                  className="upload-form"
+                  onSubmit={(e) => e.preventDefault()}
+                >
+                  <h2>Upload Video</h2>
+                  <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
+                    <div className="mb-4">
+                      <label
+                        htmlFor="file-upload"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Choose a file
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        onChange={handleFile}
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-gray-800">Lecture Name *</label>
+                      <input
+                        type="text"
+                        name="lectureName"
+                        value={newVideo.lectureName}
+                        onChange={handleInputChange}
+                        placeholder="Lecture Name"
+                        required
+                      />
+                    </div>
+                    <div className="form-group my-4">
+                      <label className="text-gray-800">
+                        Lecture Description *
+                      </label>
+                      <textarea
+                        name="lectureDescription"
+                        value={newVideo.lectureDescription}
+                        onChange={handleInputChange}
+                        placeholder="Lecture Description"
+                        required
+                        className="p-1 text-black"
+                      ></textarea>
+                    </div>
+                    <button
+                      onClick={handleVideoUpload}
+                      disabled={!file || uploading}
+                      className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+                    >
+                      {uploading ? "Uploading..." : "Upload"}
+                    </button>
+                    {uploading && (
+                      <div className="mt-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium text-blue-700">
+                            Uploading...
+                          </span>
+                          <span className="text-sm font-medium text-blue-700">
+                            {uploadProgress}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                          <div
+                            className="bg-blue-600 h-2.5 rounded-full"
+                            style={{ width: `${uploadProgress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
+                  {/***
+              <div className="form-row">
+
+                <div className="form-group">
+                  <label>Lecture Image *</label>
+                  <input type="file" name="lectureImage" onChange={handleInputChange} accept="image/*" />
+                </div>
+                
+
+                <div className="form-group">
+                  <label>Attachments *</label>
+                  <input type="file" name="attachments" onChange={handleInputChange} accept=".pdf,.doc,.ppt,.zip" />
+                </div>
+
+              </div>
+
+              */}
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
         <div>
           {showOverview && (
             <div className="mt-4 p-4 border border-gray-200 rounded shadow-md shadow-gray-600 bg-gray-50">
