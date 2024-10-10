@@ -16,13 +16,31 @@ const CourseTable = () => {
   const [getCourse, setgetCourse] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState();
+  const [teacherDetails,setTeacherDetail] = useState();
+  const [selectedTeacher, setSelectedTeacher] = useState();
 
   useEffect(() => {
     axios.get("/api/course/getCourses").then((res) => {
       setgetCourse(res.data.data);
+      setTeacherDetail(res.data?.anything);
       // setFilteredProducts(res.data.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (selectedProduct) {
+      selectedProduct.courseTeacher.map((data) => {
+        teacherDetails.map((teacher) => {
+          if (teacher.teacherEmail === data) {
+            console.log(teacher)
+            setSelectedTeacher(teacher);
+          }
+          return null;
+        });
+        return null;
+      })
+    }
+  }, [selectedProduct,showOverview]);
 
   const CourseCard = ({ product }) => (
     <div
@@ -59,7 +77,7 @@ const CourseTable = () => {
         {/* <p>
           <strong>Teacher:</strong> {product.courseTeacher.map((data) => data)}
         </p> */}
-        <section className="flex my-4 justify-around gap-12 items-center">
+        <section className="flex my-4 justify-center gap-12 items-center ">
           <button
             onClick={() => setShowOverview(true)}
             className="border-1 shadow-md rounded-lg border-gray-300 p-2 text-xl text-gray-600 hover:bg-gray-100 bg-blue-300 hover:text-green-500 transition-colors duration-200"
@@ -67,12 +85,17 @@ const CourseTable = () => {
             View Course
           </button>
 
-          <Link to="/admin/viewLectures">
+          <Link to={`/admin/viewLectures/${product.courseCode}`}>
             <button className="border-1 shadow-md rounded-lg border-gray-300 p-2 text-xl text-gray-600 hover:bg-gray-100 bg-blue-300 hover:text-green-500 transition-colors duration-200">
               View Lectures
             </button>
           </Link>
         </section>
+        <Link to="/admin/updateCourse">
+          <button className="border-1 shadow-md rounded-lg border-gray-300 p-2 text-xl text-gray-600 hover:bg-gray-100 bg-blue-300 hover:text-green-500 transition-colors duration-200">
+            Update Course
+          </button>
+        </Link>
       </div>
     </div>
   );
@@ -121,13 +144,17 @@ const CourseTable = () => {
         </div>
 
         <div>
-
           {showOverview && (
             <div className="mt-4 p-4 border border-gray-200 rounded shadow-md shadow-gray-600 bg-gray-50">
               <h3 className="text-lg text-center font-semibold">
                 Course Overview
-
-                <span className="absolute top-0 right-0 p-2 text-gray-400 bg-gray-100 rounded-full cursor-pointer" onClick={() => setShowOverview(false)}> x </span>
+                <span
+                  className="absolute top-0 right-0 p-2 text-gray-400 bg-gray-100 rounded-full cursor-pointer"
+                  onClick={() => setShowOverview(false)}
+                >
+                  {" "}
+                  x{" "}
+                </span>
               </h3>
 
               <header className="flex flex-col md:flex-row justify-center items-start md:justify-around lg:justify-around xl:items-start">
@@ -154,7 +181,7 @@ const CourseTable = () => {
                     <strong>Duration:</strong>
                     {selectedProduct.courseDuration}
                   </p>
-
+                  {/* 
                   <div className="flex flex-col justify-between w-full">
                     <p className="">
                       <strong>Start Date:</strong>{" "}
@@ -164,26 +191,39 @@ const CourseTable = () => {
                       <strong>End Date:</strong>{" "}
                       {selectedProduct.courseEndDate.slice(0, 7)}
                     </p>
-                  </div>
+                  </div> */}
                 </main>
 
                 {/***  Course teachers  ***/}
                 <main className="flex rounded p-4 flex-col py-12 justify-between items-center shadow-xl shadow-gray-600">
-                  <h3 className="text-lg text-center font-semibold">
+                  <h3 className="text-lg text-center mb-6 font-semibold">
                     Course Teachers
                   </h3>
-                  {selectedProduct?.courseTeacher?.map((teacher) => {
-                    return <p>{teacher}</p>;
-                  })}
+                  <div className="flex flex-col gap-4">
+                    {selectedTeacher && (
+                      <div className="flex gap-4  w-[400px] justify-center  items-start">
+                        <img
+                          src={`${selectedTeacher.teacherProfile}`}
+                          alt="Teacher"
+                          className="w-20 h-20 rounded-full"
+                        />
+                        <div className="flex flex-col gap-3">
+                          <h3 className="text-lg font-semibold">
+                            {selectedTeacher.teacherFullName}
+                          </h3>
+                          <p>{selectedTeacher.teacherEmail}</p>
+                          <p>{selectedTeacher.teacherPhoneNumber}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </main>
               </header>
 
-              <OrdersTable  courseCode={selectedProduct.courseCode}/>
+              <OrdersTable courseCode={selectedProduct.courseCode} />
             </div>
           )}
-
         </div>
-
       </div>
     </div>
   );

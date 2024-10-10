@@ -82,7 +82,7 @@ const OrdersTable = (courseCode) => {
       )}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Enrollment List</h1>
-        <button className={sharedClasses.primaryButton}>
+        {/* <button className={sharedClasses.primaryButton}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-2"
@@ -98,7 +98,7 @@ const OrdersTable = (courseCode) => {
             />
           </svg>
           Enrolled Student
-        </button>
+        </button> */}
       </div>
       <div className="mb-4">
         <input
@@ -120,7 +120,7 @@ const OrdersTable = (courseCode) => {
                 Payment id
               </th>
               <th className={sharedClasses.tableCell}>Payment</th>
-              <th className={sharedClasses.tableCell}>Action</th>
+              {/* <th className={sharedClasses.tableCell}>Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -155,41 +155,13 @@ const OrdersTable = (courseCode) => {
                 </td>
 
                 <td className={sharedClasses.tableCell}>
-                  <button className={sharedClasses.actionButton}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.55 4.55a2.5 2.5 0 01-3.6 3.6L11 14.6V10h4zM4 4a2 2 0 100 4 2 2 0 100-4zm0 12a2 2 0 100 4 2 2 0 100-4zm12 4a2 2 0 100 4 2 2 0 100-4zm0-16a2 2 0 100 4 2 2 0 100-4z"
-                      />
-                    </svg>
-                  </button>
+                
 
                   <button className={sharedClasses.editButton}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15.232 4.232a1.5 1.5 0 012.122 0l1.768 1.768a1.5 1.5 0 010 2.122l-10 10a1.5 1.5 0 01-.667.384l-5 1.5a.5.5 0 01-.632-.632l1.5-5a1.5 1.5 0 01.384-.667l10-10z"
-                      />
-                    </svg>
+                
                   </button>
 
-                  <button className={sharedClasses.deleteButton}>
+                  {/* <button className={sharedClasses.deleteButton}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -204,7 +176,7 @@ const OrdersTable = (courseCode) => {
                         d="M19 7l-.867 12.142A2 2 0 0116.136 21H7.864a2 2 0 01-1.997-1.858L5 7m5-3V3h4v1m4 0H6m13 0a2 2 0 00-2-2h-1a2 2 0 00-2-2h-4a2 2 0 00-2 2H5a2 2 0 00-2 2h16z"
                       />
                     </svg>
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}

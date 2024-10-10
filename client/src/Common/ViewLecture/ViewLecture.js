@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 function ViewLecture() {
   const { courseCode } = useParams();
-
+  console.log(courseCode)
   const [activeVideo, setActiveVideo] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("");
@@ -128,7 +128,7 @@ function ViewLecture() {
 
       <div className="flex  flex-col md:flex-row md:h-[60rem]">
 
-        {activeVideo && (
+        { (
           <div className="w-full md:w-full flex flex-col items-center bg-gray-900 p-5">
             
           

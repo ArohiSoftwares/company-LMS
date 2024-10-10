@@ -33,7 +33,7 @@ adminRouter.route('/totalCourses').post(isAdminLogin, upload.none(), getCourses)
 
 adminRouter.route('/updateAdmin').post(isAdminLogin, upload.none(), updateAdmin);
 
-adminRouter.route('/getTeachers').get(isAdminLogin, upload.none(), getTeachers);
+adminRouter.route('/getTeachers').get( upload.none(), getTeachers);
 adminRouter.route('/updateTeacher').post(isAdminLogin, upload.none(), updateTeacher);
 adminRouter.route('/deleteTeacher').post(isAdminLogin, upload.none(), deleteTeacher);
 

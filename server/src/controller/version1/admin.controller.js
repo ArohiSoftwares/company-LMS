@@ -240,7 +240,7 @@ const showAllCourses = asyncHandler(async (req, res) => {
 });
 
 const getTeachers = async (req, res) => {
-    const { adminEmail } = req.user;
+     const { adminEmail } = req.user || {};
 
     try {
         const teachers = await Teacher.find();
