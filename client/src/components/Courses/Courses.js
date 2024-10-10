@@ -75,7 +75,7 @@ function Courses() {
 
      <div className="flex flex-wrap justify-center gap-8">
 
-      {courses.map((course) => (
+      {courses && courses?.map((course) => (
         <div
           key={course._id}
           className="bg-gray-700 text-white rounded-lg shadow-lg overflow-hidden shadow-gray-200"
@@ -93,7 +93,7 @@ function Courses() {
             
             <hr />
             <button className="text-cyan-400 mt-7 font-semibold text-xl ">
-              {course.courseTeacher.map((teacher) => {
+              { course.courseTeacher && course.courseTeacher?.map((teacher) => {
                 return <div key={teacher.id}>{teacher}</div>
               })}
             </button>

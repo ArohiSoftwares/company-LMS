@@ -21,20 +21,23 @@ const loginUser = asyncHandler(async (req, res) => {
     console.log('req.body => ', req.body);
 
     if (!studentEmail || !studentPassword) {
-        return res.status(400).json(new ApiError(400, 'Email and Password are required'));
+        throw new ApiError(400, "Email or Password is not provided");
     }
 
     try {
+
         /// find this is student or not
 
         const student = await Student.findOne({ studentEmail }).select('+studentPassword');
 
         console.log(student);
+
         if (student) {
             const comparePassword = await bcrypt.compare(studentPassword, student.studentPassword);
             console.log(comparePassword);
+            
             if (!comparePassword) {
-                return res.status(400).json(new ApiError(400, 'Email or Password is incorrect in Students'));
+                throw new ApiError(400, 'Email or Password is incorrect in Students');
             }
 
             const studentToken = student.generateStudentLogin();
@@ -87,8 +90,10 @@ const loginUser = asyncHandler(async (req, res) => {
                 .json(new ApiResponse(200, 'Admin login successfully', admin));
         }
 
-        return res.json(new ApiResponse(404, 'Email or Password is incorrect to find in All Servers'));
-    } catch (error) {
+        throw new ApiError(404, 'Email or Password is incorrect');
+    } 
+    
+    catch (error) {
         console.log('error => ', error);
         return res.status(400).json(new ApiError(400, error.message));
     }

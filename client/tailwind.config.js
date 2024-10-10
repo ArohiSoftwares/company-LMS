@@ -3,7 +3,17 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        fadeInSlow: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        fadeInSlow: 'fadeInSlow 2s ease-in-out',
+      },
+    },
     screens: {
 
       'xs': '380px',
