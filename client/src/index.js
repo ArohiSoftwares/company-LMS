@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store/store";
-import { ToastContainer } from "react-toastify";
+
 import { PersistGate } from "redux-persist/integration/react";
 import Home from "./views/Home/Home";
 import Coursespage from "./views/Coursespage/Coursespage";
@@ -35,13 +35,18 @@ import MyCourses from "./Student/MyCourses/MyCourses";
 import UploadVideo from "./Teacher/UploadVideo/UploadVideo";
 import TeacherProfile from "./Teacher/YourProfile/teacherProfile";
 import TeacherMycourses from "./Teacher/TeacherMycourses/TeacherMycourses";
-import axios from "axios";
+// import axios from "axios";
 import ForgotPassword from "./Login/ForgetPassword";
 import ResetPassword from "./Login/ResetPassword";
+import UserRoutes from "./Layout/UserLayout/UserRoutes";
+import { ToastContainer } from "react-toastify";
 
-const api = axios.create({
-  baseURL: "http://localhost:5000",
-});
+// const api = axios.create({
+//   baseURL: "http://localhost:5000",
+//   withCredentials: true,
+// });
+
+
 
 
 
@@ -49,7 +54,17 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Outlet />}>
       <Route path="/" element={<Home />} />
+
       <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      
+      <Route path="/" element={ <UserRoutes  />}/>
+    
+      <Route path="/forgot-password" element={<ForgotPassword/>}/>
+      <Route path="/resetpassword/:token" element={<ResetPassword/>} />
+      <Route path="courses" element={<Coursespage />} />
+      <Route path="overview/:courseCode" element={<Overview />} />
+
 
       <Route path="/resetpassword/:token" element={<ResetPassword />} />
       <Route path="courses" element={<Coursespage />} />
@@ -106,7 +121,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
       </PersistGate>
-      {/* <ToastContainer /> */}
+      <ToastContainer /> 
     </Provider>
   </React.StrictMode>
 );
