@@ -102,8 +102,7 @@ const CourseSchema = new mongoose.Schema(
 
         courseTeacher: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Teacher'
+                type: String
             }
         ],
 

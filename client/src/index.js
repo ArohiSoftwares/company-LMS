@@ -54,6 +54,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Outlet />}>
       <Route path="/" element={<Home />} />
+
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
       
       <Route path="/" element={ <UserRoutes  />}/>
     
@@ -62,6 +65,10 @@ const router = createBrowserRouter(
       <Route path="courses" element={<Coursespage />} />
       <Route path="overview/:courseCode" element={<Overview />} />
 
+
+      <Route path="/resetpassword/:token" element={<ResetPassword />} />
+      <Route path="courses" element={<Coursespage />} />
+      <Route path="overview/:" element={<Overview />} />
 
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
@@ -75,7 +82,10 @@ const router = createBrowserRouter(
         <Route path="/admin/teachers" element={<TeacherList />} />
 
         <Route path="/admin/courses" element={<CourseTable />} />
-        <Route path="/admin/viewLectures" element={<ViewLecture />} />
+        <Route
+          path="/admin/viewLectures/:courseCode"
+          element={<ViewLecture />}
+        />
 
         <Route path="/createCourse" element={<CreateCourse />} />
         <Route path="/admin/updateCourse" element={<UpdateCourse />} />
@@ -89,7 +99,6 @@ const router = createBrowserRouter(
         />
       </Route>
 
-      
       <Route element={<ProtectedTeacherRoutes />}>
         <Route path="/uploadvideo" element={<UploadVideo />} />
         <Route path={"/uploadvideo/:courseCode"} element={<UploadVideo />} />

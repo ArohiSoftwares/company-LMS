@@ -195,10 +195,11 @@ const getCourses = asyncHandler(async (req, res) => {
             return res.status(404).json(new ApiError(404, 'Admin not found'));
         }
 
-        // const courses = await Course.find({ adminEmail });
-        const courses = await Course.find({ adminEmail }).populate('courseTeacher');
-
-        return res.status(200).json(new ApiResponse(200, 'Courses retrieved successfully', courses));
+        const courses = await Course.find({ adminEmail });
+        // const courses = await Course.find({ adminEmail }).populate('courseTeacher');
+        const teacher = await Teacher.find({ });
+        console.log("teacher => ",teacher)
+        return res.status(200).json(new ApiResponse(200, 'Courses retrieved successfully', courses,teacher ));
     } catch (error) {
         return res.status(500).json(new ApiError(500, error.message));
     }

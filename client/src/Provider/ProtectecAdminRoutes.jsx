@@ -38,7 +38,7 @@ export function ProtectedAdminRoute() {
 
       { name: "CreateCourse", path: "/createCourse", icon: <FaTags /> },
 
-      { name: "update Course", path: "/admin/updateCourse", icon: <FaUser /> },
+      // { name: "update Course", path: "/admin/updateCourse", icon: <FaUser /> },
       { name: "Teacher List", path: "/admin/teachers", icon: <FaUser /> },
     ];
     const [hideSidebar, sethideSidebar] = useState(true);

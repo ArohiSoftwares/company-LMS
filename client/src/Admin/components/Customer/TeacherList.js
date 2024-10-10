@@ -67,7 +67,7 @@ const TeacherList = () => {
                 <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Phone</th>
                 <th className="py-3 px-6 text-left">Email</th>
-                <th className="py-3 px-6 text-center">Action</th>
+                <th className="py-3 px-6 text-  center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +91,7 @@ const TeacherList = () => {
                     >
                       <div className="flex items-center space-x-3">
                         <img
-                          src={teacher.image}
+                          src={teacher.teacherProfile}
                           alt="Teacher"
                           className="rounded-full w-10 h-10"
                         />
@@ -368,13 +368,13 @@ const TeacherRegistrationForm = ({
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        {/* <div>
           <label>
             Profile
             <input onChange={(e) => setProfileImage(e.target.files[0])} type="file" name="profile" />
           </label>
           <img src={profileImage} alt="profile" />
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label
