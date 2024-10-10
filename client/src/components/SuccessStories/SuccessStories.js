@@ -40,11 +40,11 @@ function SuccessStories() {
       <h1 className="text-white text-6xl ml-20 font-bold mb-16">
         Success Stories
       </h1>
-      <div className="animate-attach">
+      <div className="animate-attach w-[200%]">
         {story.map((course) => (
           <div
             key={course.id}
-            className=" bg-black text-white w-[70%] rounded-lg shadow-lg overflow-hidden"
+            className=" bg-black text-white min-w-[20rem] rounded-lg shadow-lg overflow-hidden mb-5"
           >
             <div className="flex justify-center mt-5">
               <img
