@@ -35,14 +35,14 @@ import MyCourses from "./Student/MyCourses/MyCourses";
 import UploadVideo from "./Teacher/UploadVideo/UploadVideo";
 import TeacherProfile from "./Teacher/YourProfile/teacherProfile";
 import TeacherMycourses from "./Teacher/TeacherMycourses/TeacherMycourses";
-// import axios from "axios";
 import ForgotPassword from "./Login/ForgetPassword";
 import ResetPassword from "./Login/ResetPassword";
 import UserRoutes from "./Layout/UserLayout/UserRoutes";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 
 // const api = axios.create({
-//   baseURL: "http://localhost:5000",
+//   baseURL: "http://13.60.87.251/",
 //   withCredentials: true,
 // });
 
