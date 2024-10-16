@@ -21,13 +21,12 @@ import Login from "./Login/Login";
 import ViewLecture from "./Common/ViewLecture/ViewLecture";
 import ProtectedRoutes from "./Provider/ProtectedRoutes";
 import { ProtectedAdminRoute } from "./Provider/ProtectecAdminRoutes";
-import ProtectedTeacherRoutes from "./Provider/ProtectedTecherRoutes"
+import ProtectedTeacherRoutes from "./Provider/ProtectedTecherRoutes";
 import AdminDashboard from "./Admin/components/Dashboard/Dashboard";
 
 import CreateCourse from "./Admin/CreateCourse/CreateCourse";
 import TeacherList from "./Admin/components/Customer/TeacherList";
 import CourseTable from "./Admin/components/CourseTable/CourseTable";
-
 
 import UpdateCourse from "./Admin/UpdateCourse/UpdateCourse";
 import YourProfile from "./Student/YourProfile/YourProfile";
@@ -41,14 +40,10 @@ import UserRoutes from "./Layout/UserLayout/UserRoutes";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 
-// const api = axios.create({
-//   baseURL: "http://13.60.87.251/",
-//   withCredentials: true,
-// });
-
-
-
-
+const api = axios.create({
+  baseURL: "http://13.60.87.251/",
+  withCredentials: true,
+});
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,14 +52,12 @@ const router = createBrowserRouter(
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      
-      <Route path="/" element={ <UserRoutes  />}/>
-    
-      <Route path="/forgot-password" element={<ForgotPassword/>}/>
-      <Route path="/resetpassword/:token" element={<ResetPassword/>} />
+      <Route path="/" element={<UserRoutes />} />
+
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/resetpassword/:token" element={<ResetPassword />} />
       <Route path="courses" element={<Coursespage />} />
       <Route path="overview/:courseCode" element={<Overview />} />
-
 
       <Route path="/resetpassword/:token" element={<ResetPassword />} />
       <Route path="courses" element={<Coursespage />} />
@@ -121,7 +114,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
       </PersistGate>
-      <ToastContainer /> 
+      <ToastContainer />
     </Provider>
   </React.StrictMode>
 );
