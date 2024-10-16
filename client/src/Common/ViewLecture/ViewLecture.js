@@ -154,6 +154,7 @@ function ViewLecture() {
               >
                 {playing ? "Pause" : "Play"}
               </button>
+           
 
               {/* 
                 <button
