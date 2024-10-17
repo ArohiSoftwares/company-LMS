@@ -6,8 +6,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import userSlice, { setUser } from "../store/User/userSlice";
-import { useSelector } from "react-redux";
+import  { setUser } from "../store/User/userSlice";
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginUser = "null";
+
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -29,11 +29,7 @@ function Signup() {
       studentPassword: password,
     };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    
 
     try {
       const response = await axios.post("/api/student/register", body);
@@ -162,19 +158,23 @@ function Signup() {
               </div>
             </form>
 
-            <div className="my-4 text-center">
-              <button
-                type="button"
-                className="flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-semibold   px-4 w-full rounded focus:outline-none focus:shadow-outline transition-transform duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="https://icon2.cleanpng.com/20180326/dhq/kisspng-google-logo-google-home-google-now-google-plus-5ab9b2a5ee5e37.4776417115221193339764.jpg"
-                  alt="Google Logo"
-                  className="w-16 white h-12 mr-2"
-                />
-                Sign Up with Google
-              </button>
-            </div>
+            {/* 
+              <div className="my-4 text-center">
+                <button
+                  type="button"
+                  className="flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-semibold   px-4 w-full rounded focus:outline-none focus:shadow-outline transition-transform duration-300 transform hover:scale-105"
+                >
+                  <img
+                    src="https://icon2.cleanpng.com/20180326/dhq/kisspng-google-logo-google-home-google-now-google-plus-5ab9b2a5ee5e37.4776417115221193339764.jpg"
+                    alt="Google Logo"
+                    className="w-16 white h-12 mr-2"
+                  />
+                  Sign Up with Google
+                </button>
+              </div>
+            */}
+
+            
           </div>
         </div>
       </div>

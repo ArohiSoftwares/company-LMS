@@ -82,7 +82,7 @@ function Courses() {
           style={{width:"25rem"}}
         >
           <img
-            src={course.courseThumbnail.private_url}
+            src={course?.courseThumbnail?.private_url}
             alt={course.title}
             className="w-full h-[250px]"
             height="200px"

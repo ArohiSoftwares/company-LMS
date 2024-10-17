@@ -228,7 +228,7 @@ function Overview() {
           <div className="flex-1 lg:ml-10">
             <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 overflow-hidden rounded-lg shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl">
               <img
-                src={category.courseThumbnail.private_url}
+                src={category?.courseThumbnail?.private_url}
                 alt={category.courseName}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-in-out hover:rotate-3"  // Added hover rotation
               />

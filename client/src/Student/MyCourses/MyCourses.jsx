@@ -63,11 +63,11 @@ function MyCourses() {
 
 
 
-  if(courses.length <= 0){
+  if(courses === null ||  courses.length <= 0){
     return (
       <div> 
         <p className="text-center text-white text-2xl font-bold">
-          You have not created any course yet
+          You have not Enroller in any course yet
         </p>
       </div>
     )
