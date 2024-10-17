@@ -4,10 +4,10 @@ import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const initialVideos = [];
+
 
 const UploadVideo = () => {
-  const [videos, setVideos] = useState(initialVideos);
+
   const [showForm, setShowForm] = useState(false);
   const [signedUrl, seteSignedUrl] = useState(null);
   const [newVideo, setNewVideo] = useState({
@@ -24,8 +24,7 @@ const UploadVideo = () => {
 
   const [file, setfile] = useState();
 
-  const [filterDuration, setFilterDuration] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
+
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const { courseCode } = useParams();
@@ -41,22 +40,7 @@ const UploadVideo = () => {
   const handleVideoUpload = async (e) => {
     if (!file) return;
 
-    // const videoUrl = URL.createObjectURL(file);
-    // const video = document.createElement("video");
 
-    // video.preload = "metadata";
-    // video.onloadedmetadata = () => {
-    //   window.URL.revokeObjectURL(videoUrl);
-    //   const duration = Math.floor(video.duration);
-    //   const minutes = Math.floor(duration / 60);
-    //   const seconds = duration % 60;
-    //   setNewVideo({
-    //     ...newVideo,
-    //     video: videoUrl,
-    //     duration: ${minutes}m ${seconds}s,
-    //   });
-    // };
-    // video.src = videoUrl;
     const response = await axios.post(
       `/api/course/uploadLectures?courseCode=${courseCode}`
     );
@@ -101,44 +85,7 @@ const UploadVideo = () => {
     console.log("response 2=>", resposne2);
   };
 
-  const filteredVideos = videos.filter((video) => {
-    const videoDuration = parseInt(video.duration.split("m")[0]);
-    const durationMatch =
-      filterDuration === "" ||
-      (filterDuration === "5" && videoDuration < 5) ||
-      (filterDuration === "10" && videoDuration < 10) ||
-      (filterDuration === "20" && videoDuration < 20) ||
-      (filterDuration === "30" && videoDuration < 30) ||
-      (filterDuration === "40" && videoDuration < 40) ||
-      (filterDuration === "50" && videoDuration < 50) ||
-      (filterDuration === "60" && videoDuration < 60) ||
-      (filterDuration === "61" && videoDuration > 61);
-    const categoryMatch =
-      filterCategory === "" || video.category === filterCategory;
-    return durationMatch && categoryMatch;
-  });
-
-  const handleVideoClick = (video) => {
-    const videoElement = document.createElement("video");
-    videoElement.src = video.video;
-    videoElement.controls = true;
-    videoElement.style.width = "100%";
-    videoElement.style.height = "100%";
-    document.body.appendChild(videoElement);
-    videoElement.requestFullscreen();
-    videoElement.play();
-
-    videoElement.onended = () => {
-      videoElement.remove();
-    };
-
-    videoElement.onfullscreenchange = () => {
-      if (!document.fullscreenElement) {
-        videoElement.remove();
-      }
-    };
-  };
-
+  
   return (
     <div className="upload-video-container">
       <Navbar />
@@ -223,25 +170,8 @@ const UploadVideo = () => {
                 )}
               </div>
 
-                {/***
-              <div className="form-row">
 
-                <div className="form-group">
-                  <label>Lecture Image *</label>
-                  <input type="file" name="lectureImage" onChange={handleInputChange} accept="image/*" />
-                </div>
-                
 
-                <div className="form-group">
-                  <label>Attachments *</label>
-                  <input type="file" name="attachments" onChange={handleInputChange} accept=".pdf,.doc,.ppt,.zip" />
-                </div>
-
-              </div>
-
-              */}
-
- 
             </form>
           </div>
         </div>

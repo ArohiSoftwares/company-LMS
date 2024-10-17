@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import OrdersTable from "../Orders/OrdersTable";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 //Course Sidebar Data panel
 
-const inputClasses = "border border-input rounded p-1";
-const buttonClasses = "p-2 border border-border rounded";
 
-const primaryClasses = "bg-primary text-primary-foreground";
 
 // Define the CourseCard component
 const initialVideos = [];
@@ -129,7 +126,7 @@ const CourseTable = () => {
       className="flex bg-white rounded-2xl  flex-col "
     >
       <img
-        src={`${product.courseThumbnail.private_url}`}
+        src={ product?.courseThumbnail?.private_url}
         alt="Course"
         className="w-full rounded-t-2xl mb-4 object-fill h-40"
       />
@@ -343,7 +340,7 @@ const CourseTable = () => {
               <header className="flex flex-col md:flex-row justify-center items-start md:justify-around lg:justify-around xl:items-start">
                 <main className="flex rounded p-4 flex-col justify-between items-start ">
                   <img
-                    src={`${selectedProduct.courseThumbnail.private_url}`}
+                    src={selectedProduct?.courseThumbnail?.private_url}
                     alt="Course"
                     className="w-full mb-4 h-40 object-cover"
                   />
