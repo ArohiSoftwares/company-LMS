@@ -69,8 +69,8 @@ function Login() {
           "url(https://plus.unsplash.com/premium_photo-1661687561711-6357ab1d1f75?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
       }}
     >
-      <div className="flex items-center justify-center h-full">
-        <div className="flex flex-col items-start justify-center pl-16 w-1/2 text-white">
+      <div className="flex items-center justify-center  h-full">
+        <div className="lg:flex flex-col hidden lg:visible items-start justify-center pl-16 w-1/2 text-white">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR92EbNg_Z7rBlIoENCzgQDZSADsXPwYQz83w&s"
             alt="Logo"
@@ -85,18 +85,16 @@ function Login() {
             personal growth. Join our community today!
           </p>
         </div>
-        <div className="flex items-center justify-end w-1/2">
-          <div className="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-full max-w-md mr-16 transform transition-all duration-500 hover:scale-105">
+        <div className="flex items-center justify-end w-screen ">
+          <div className="bg-white w-fit  bg-opacity-75 p-8 rounded-lg shadow-lg max-w-md mr-16 transform transition-all duration-500 hover:scale-105">
             <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">
               Login
             </h2>
 
             {/**  show error here */}
-            {
-                error && <div className="text-red-500 text-center">{error}</div>
-            }
+            {error && <div className="text-red-500 text-center">{error}</div>}
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className=" ">
               {/***  email input field */}
               <div className="mb-4">
                 <label
@@ -172,8 +170,7 @@ function Login() {
                 Login with Google
               </button>
             </div>
-            */}  
-
+            */}
           </div>
         </div>
       </div>

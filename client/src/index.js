@@ -38,12 +38,12 @@ import ForgotPassword from "./Login/ForgetPassword";
 import ResetPassword from "./Login/ResetPassword";
 import UserRoutes from "./Layout/UserLayout/UserRoutes";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
+// import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://13.60.87.251/",
-  withCredentials: true,
-});
+// const api = axios.create({
+//   baseURL: "http://13.60.87.251/",
+//   withCredentials: true,
+// });
 
 const router = createBrowserRouter(
   createRoutesFromElements(

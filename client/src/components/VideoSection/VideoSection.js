@@ -4,11 +4,11 @@ import "./VideoSection.css"
 
 function VideoSection() {
   return (
-    <div className="mt-36 mb-36 w-auto">
+    <div className="mt-36 mb-36 w-auto ">
       <div className="text-center text-5xl">
         <p className="text-white"> We do whatever it takes to help you</p>
         <span className=" text-cyan-400 ">understand the concepts.</span>
-        <div className="flex justify-center w-auto h-[480px] mx-auto  mt-11 shadow-emerald-600">
+        <div className="flex justify-center w-[180px] h-[240px] lg:w-auto md:w-auto mx-auto  mt-11 shadow-emerald-600">
           <iframe
             width="760"
             height="480"

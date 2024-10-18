@@ -177,7 +177,7 @@ function Overview() {
   }
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-screen overflow-hidden">
       <Navbar />
 
         {/*  Headline Section */}
