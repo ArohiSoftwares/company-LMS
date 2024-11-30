@@ -1,14 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link, Navigate, Outlet } from "react-router-dom";
 
-import Admin from "../Admin/Admin";
 
-import AdminDashboard from "../Admin/components/Dashboard/Dashboard";
-import ViewLecture from "../Common/ViewLecture/ViewLecture";
-
-import CreateCourse from "../Admin/CreateCourse/CreateCourse";
-import TeacherList from "../Admin/components/Customer/TeacherList";
-import CourseTable from "../Admin/components/CourseTable/CourseTable";
 import {
   FaTachometerAlt,
   FaBoxOpen,
@@ -18,7 +11,7 @@ import {
 } from "react-icons/fa";
 
 import { LuAlignJustify } from "react-icons/lu";
-import UpdateCourse from "../Admin/UpdateCourse/UpdateCourse";
+
 import AdminNavbar from "../Admin/Navigation/AdminNavbar";
 import { useState } from "react";
 

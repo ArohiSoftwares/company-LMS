@@ -5,7 +5,7 @@ import axios from "axios"
 import {useState, useEffect} from "react"
 import Navbar from "../../components/Navbar/Navbar";
 
- 
+
 function TeacherMycourses() {
   
   const [courses , setcourses]= useState([{

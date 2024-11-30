@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { message } from 'react-message-popup'
 
 const YourProfile = () => {
-  const loginUser = "student";
+
 
   const [profile, setProfile] = useState({
     studentFullName: "",

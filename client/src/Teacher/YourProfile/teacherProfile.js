@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import "./teacherProfile.css";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import Navbar from "../../components/Navbar/Navbar";
 import { message } from "react-message-popup";
 
 const TeacherProfile = () => {
-  const loginUser = "teacher";
+  
 
   const [profile, setProfile] = useState({
     teacherFullName: "",
@@ -51,7 +51,7 @@ const TeacherProfile = () => {
 
     try {
       
-      const response = await axios.put(`/api/teacher/update`, profile , config);
+      const response = await axios.put(`/api/teacher/update`, body , config);
 
       console.log("response =>", response);
 

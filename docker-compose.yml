@@ -1,34 +1,20 @@
-version: '3.8'
-
 services:
-  client:
-    build: 
-      context: ./client
-      dockerfile: Dockerfile
-    container_name: client
+  frontend:
+    build: ./client
     ports:
-      - "5173:5173"
-
-    volumes:
-      - ./client:/app
-    
+      - "3000:80"
     networks:
-      - lms-network
-  server:
-    build: 
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: backend
+      - app-network
+    depends_on:
+      - backend
+
+  backend:
+    build: ./server
     ports:
       - "5000:5000"
-    volumes:
-      - ./server:/app
-    depends_on:
-      - client  
     networks:
-      - lms-network
-
+      - app-network
 
 networks:
-  lms-network:
-    driver: bridge
+  app-network:
+    driver: bridge  # Use the bridge network driver for communication

@@ -60,9 +60,8 @@ function category() {
       <div className="min-h-screen  p-10">
       
       {
-        <h1 className="text-white text-center text-6xl ml-20 font-bold mb-10">
+        <h1 className="text-white text-center  text-6xl  lg:ml-20 font-bold mb-10">
           Explore Our Categories
-        
         </h1>
 
       }
